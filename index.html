@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Family Dashboard 🏠</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #FFF5E1;
+            --bg-secondary: #FFEFD5;
+            --text-primary: #2C3E50;
+            --text-secondary: #5D6D7E;
+            --accent-misha: #FF6B9D;
+            --accent-kamia: #9B59D0;
+            --success: #4CAF50;
+            --warning: #FFA726;
+            --card-bg: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --overlay: rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1A1A2E;
+            --bg-secondary: #16213E;
+            --text-primary: #EAEAEA;
+            --text-secondary: #B8B8B8;
+            --card-bg: #0F3460;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --overlay: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #FF6B9D, #9B59D0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: transform 0.2s;
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .profile-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .profile-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 30px;
+            padding: 40px 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px var(--shadow);
+        }
+
+        .profile-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .profile-btn.misha {
+            background: linear-gradient(135deg, #FFE5EC, #FFB3C6);
+        }
+
+        .profile-btn.kamia {
+            background: linear-gradient(135deg, #E5D4F5, #C5A3E8);
+        }
+
+        .profile-btn.parent {
+            background: linear-gradient(135deg, #FFE5B4, #FFD700);
+            grid-column: 1 / -1;
+        }
+
+        .profile-avatar {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .profile-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .profile-stats {
+            margin-top: 10px;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .kid-view {
+            display: none;
+        }
+
+        .kid-view.active {
+            display: block;
+        }
+
+        .kid-header {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .kid-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .kid-avatar {
+            font-size: 3em;
+        }
+
+        .kid-name {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .kid-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .stat-item {
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--shadow);
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:active {
+            transform: scale(0.9);
+        }
+
+        .tasks-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 80px;
+        }
+
+        .tasks-grid.misha {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .task-card.misha {
+            min-height: 150px;
+            padding: 30px 15px;
+        }
+
+        .task-card:active {
+            transform: scale(0.95);
+        }
+
+        .task-card.completed {
+            opacity: 0.6;
+            background: linear-gradient(135deg, #D4EDDA, #C3E6CB);
+        }
+
+        .task-emoji {
+            font-size: 3em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .task-card.misha .task-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .task-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .task-card.misha .task-title {
+            font-size: 1.1em;
+            line-height: 1.3;
+        }
+
+        .task-subtasks {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .subtask {
+            padding: 5px 0;
+            text-align: left;
+        }
+
+        .subtask.done {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2em;
+            display: none;
+        }
+
+        .task-card.completed .checkmark {
+            display: block;
+        }
+
+        /* Parent View */
+        .parent-view {
+            display: none;
+        }
+
+        .parent-view.active {
+            display: block;
+        }
+
+        .pin-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .pin-dialog {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            max-width: 90%;
+            box-shadow: 0 10px 40px var(--shadow);
+        }
+
+        .pin-input {
+            font-size: 2em;
+            text-align: center;
+            border: 3px solid var(--accent-misha);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            width: 200px;
+            letter-spacing: 15px;
+        }
+
+        .pin-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pin-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--text-secondary);
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pin-btn:active {
+            transform: scale(0.95);
+            background: var(--accent-misha);
+            color: white;
+        }
+
+        .admin-section {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .admin-section h2 {
+            margin-bottom: 20px;
+            color: var(--accent-misha);
+        }
+
+        .kid-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .kid-selector button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+            background: var(--bg-secondary);
+            transition: all 0.2s;
+        }
+
+        .kid-selector button.active {
+            background: linear-gradient(135deg, #FF6B9D, #9B59D0);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .task-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 12px;
+            font-size: 1em;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B9D, #9B59D0);
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .task-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .task-item {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-item-emoji {
+            font-size: 2em;
+            margin-right: 10px;
+        }
+
+        .task-item-info {
+            flex: 1;
+        }
+
+        .task-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .btn-edit {
+            background: #FFA726;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #EF5350;
+            color: white;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 9999;
+            pointer-events: none;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .completion-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            z-index: 9998;
+            box-shadow: 0 10px 50px var(--shadow);
+            animation: popup 0.5s ease forwards;
+        }
+
+        @keyframes popup {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .popup-emoji {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 0.5s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+
+        .popup-text {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .profile-select {
+                grid-template-columns: 1fr;
+            }
+            
+            .tasks-grid.misha {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="container">
+        <!-- Landing Page -->
+        <div id="landing" class="landing-page">
+            <div class="header">
+                <h1>Family Dashboard 🏠</h1>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            </div>
+            <div class="profile-select">
+                <button class="profile-btn misha" onclick="showKidView('misha')">
+                    <span class="profile-avatar">👧</span>
+                    <div class="profile-name">Misha</div>
+                    <div class="profile-stats">
+                        <span id="misha-stars-preview">⭐ 0</span>
+                        <span id="misha-streak-preview">🔥 0</span>
+                    </div>
+                </button>
+                <button class="profile-btn kamia" onclick="showKidView('kamia')">
+                    <span class="profile-avatar">👩</span>
+                    <div class="profile-name">Kamia</div>
+                    <div class="profile-stats">
+                        <span id="kamia-stars-preview">⭐ 0</span>
+                        <span id="kamia-streak-preview">🔥 0</span>
+                    </div>
+                </button>
+                <button class="profile-btn parent" onclick="showParentView()">
+                    <span class="profile-avatar">👨‍👩‍👧‍👦</span>
+                    <div class="profile-name">Parent View</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Misha's View -->
+        <div id="misha-view" class="kid-view">
+            <div class="kid-header">
+                <div class="kid-info">
+                    <span class="kid-avatar">👧</span>
+                    <div>
+                        <div class="kid-name">Misha</div>
+                    </div>
+                </div>
+                <div class="kid-stats">
+                    <div class="stat-item">⭐ <span id="misha-stars">0</span></div>
+                    <div class="stat-item">🔥 <span id="misha-streak">0</span></div>
+                </div>
+            </div>
+            <div class="tasks-grid misha" id="misha-tasks"></div>
+            <button class="back-btn" onclick="showLanding()">🏠</button>
+        </div>
+
+        <!-- Kamia's View -->
+        <div id="kamia-view" class="kid-view">
+            <div class="kid-header">
+                <div class="kid-info">
+                    <span class="kid-avatar">👩</span>
+                    <div>
+                        <div class="kid-name">Kamia</div>
+                    </div>
+                </div>
+                <div class="kid-stats">
+                    <div class="stat-item">⭐ <span id="kamia-stars">0</span></div>
+                    <div class="stat-item">🔥 <span id="kamia-streak">0</span></div>
+                </div>
+            </div>
+            <div class="tasks-grid" id="kamia-tasks"></div>
+            <button class="back-btn" onclick="showLanding()">🏠</button>
+        </div>
+
+        <!-- Parent View -->
+        <div id="parent-view" class="parent-view">
+            <div class="admin-section">
+                <h2>👨‍👩‍👧‍👦 Parent Dashboard</h2>
+                
+                <div class="kid-selector">
+                    <button onclick="selectKidAdmin('misha')" class="active" id="admin-misha-btn">Misha</button>
+                    <button onclick="selectKidAdmin('kamia')" id="admin-kamia-btn">Kamia</button>
+                </div>
+
+                <div class="task-form">
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <input type="text" id="task-emoji" placeholder="🦷">
+                    </div>
+                    <div class="form-group">
+                        <label>Task Title</label>
+                        <input type="text" id="task-title" placeholder="Brush Teeth">
+                    </div>
+                    <div class="form-group" id="subtasks-group" style="display: none;">
+                        <label>Subtasks (one per line)</label>
+                        <textarea id="task-subtasks" rows="3" placeholder="Morning routine&#10;Night routine"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="task-recurring" checked> Daily recurring
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" onclick="addTask()">➕ Add Task</button>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Current Tasks</h2>
+                <div class="task-list" id="admin-task-list"></div>
+            </div>
+
+            <div class="admin-section">
+                <h2>📊 Statistics</h2>
+                <div id="admin-stats"></div>
+            </div>
+
+            <button class="back-btn" onclick="showLanding()">🏠</button>
+        </div>
+    </div>
+
+    <script>
+        // Default PIN: 1234
+        const DEFAULT_PIN = '1234';
+        let currentAdminKid = 'misha';
+        let currentView = 'landing';
+
+        // Initialize data structure
+        function initData() {
+            const defaultData = {
+                pin: DEFAULT_PIN,
+                theme: 'light',
+                misha: {
+                    tasks: [
+                        { id: 1, emoji: '🦷', title: 'Teeth', completed: false, recurring: true },
+                        { id: 2, emoji: '🎒', title: 'School Bag', completed: false, recurring: true },
+                        { id: 3, emoji: '🧹', title: 'Tidy Room', completed: false, recurring: true },
+                        { id: 4, emoji: '📚', title: 'Homework', completed: false, recurring: true },
+                        { id: 5, emoji: '🥣', title: 'Breakfast', completed: false, recurring: true },
+                        { id: 6, emoji: '😴', title: 'Bedtime', completed: false, recurring: true }
+                    ],
+                    stars: 0,
+                    streak: 0,
+                    lastCompletionDate: null
+                },
+                kamia: {
+                    tasks: [
+                        { id: 1, emoji: '🦷', title: 'Morning Routine', completed: false, recurring: true, subtasks: ['Brush teeth', 'Wash face', 'Get dressed'] },
+                        { id: 2, emoji: '📚', title: 'Study Session', completed: false, recurring: true, subtasks: ['Math homework', 'Reading assignment'] },
+                        { id: 3, emoji: '🎵', title: 'Music Practice', completed: false, recurring: true },
+                        { id: 4, emoji: '🧹', title: 'Room Cleanup', completed: false, recurring: true, subtasks: ['Make bed', 'Organize desk', 'Laundry basket'] },
+                        { id: 5, emoji: '💪', title: 'Exercise', completed: false, recurring: true },
+                        { id: 6, emoji: '😴', title: 'Night Routine', completed: false, recurring: true, subtasks: ['Brush teeth', 'Pack bag', 'Set alarm'] }
+                    ],
+                    stars: 0,
+                    streak: 0,
+                    lastCompletionDate: null
+                },
+                lastResetDate: new Date().toDateString()
+            };
+
+            const stored = localStorage.getItem('familyDashboard');
+            if (!stored) {
+                localStorage.setItem('familyDashboard', JSON.stringify(defaultData));
+                return defaultData;
+            }
+            return JSON.parse(stored);
+        }
+
+        function saveData(data) {
+            localStorage.setItem('familyDashboard', JSON.stringify(data));
+        }
+
+        function getData() {
+            return initData();
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            
+            const data = getData();
+            data.theme = newTheme;
+            saveData(data);
+
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        // Daily Reset
+        function checkDailyReset() {
+            const data = getData();
+            const today = new Date().toDateString();
+            
+            if (data.lastResetDate !== today) {
+                // Check if all tasks were completed yesterday
+                ['misha', 'kamia'].forEach(kid => {
+                    const allCompleted = data[kid].tasks.every(t => t.completed);
+                    if (allCompleted && data[kid].lastCompletionDate) {
+                        const lastDate = new Date(data[kid].lastCompletionDate);
+                        const yesterday = new Date();
+                        yesterday.setDate(yesterday.getDate() - 1);
+                        
+                        if (lastDate.toDateString() === yesterday.toDateString()) {
+                            data[kid].streak++;
+                        } else {
+                            data[kid].streak = 0;
+                        }
+                    } else {
+                        data[kid].streak = 0;
+                    }
+
+                    // Reset daily tasks
+                    data[kid].tasks.forEach(task => {
+                        if (task.recurring) {
+                            task.completed = false;
+                        }
+                    });
+
+                    // Reset daily stars
+                    data[kid].stars = 0;
+                });
+
+                data.lastResetDate = today;
+                saveData(data);
+            }
+        }
+
+        // Navigation
+        function showLanding() {
+            document.getElementById('landing').style.display = 'block';
+            document.getElementById('misha-view').classList.remove('active');
+            document.getElementById('kamia-view').classList.remove('active');
+            document.getElementById('parent-view').classList.remove('active');
+            currentView = 'landing';
+            updateLandingStats();
+        }
+
+        function showKidView(kid) {
+            checkDailyReset();
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById(`${kid}-view`).classList.add('active');
+            currentView = kid;
+            renderKidTasks(kid);
+            updateKidStats(kid);
+        }
+
+        function showParentView() {
+            showPinDialog();
+        }
+
+        // PIN Protection
+        function showPinDialog() {
+            const overlay = document.createElement('div');
+            overlay.className = 'pin-screen';
+            overlay.innerHTML = `
+                <div class="pin-dialog">
+                    <h2>Enter PIN</h2>
+                    <input type="password" class="pin-input" id="pin-input" maxlength="4" readonly>
+                    <div class="pin-buttons">
+                        ${[1,2,3,4,5,6,7,8,9,'←',0,'✓'].map(n => 
+                            `<button class="pin-btn" onclick="pinPress('${n}')">${n}</button>`
+                        ).join('')}
+                    </div>
+                    <p style="margin-top: 20px; color: var(--text-secondary);">Default PIN: 1234</p>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    document.body.removeChild(overlay);
+                }
+            });
+        }
+
+        function pinPress(key) {
+            const input = document.getElementById('pin-input');
+            const data = getData();
+
+            if (key === '←') {
+                input.value = input.value.slice(0, -1);
+            } else if (key === '✓') {
+                if (input.value === data.pin) {
+                    document.querySelector('.pin-screen').remove();
+                    document.getElementById('landing').style.display = 'none';
+                    document.getElementById('parent-view').classList.add('active');
+                    currentView = 'parent';
+                    renderAdminView();
+                } else {
+                    input.value = '';
+                    input.style.borderColor = '#EF5350';
+                    setTimeout(() => input.style.borderColor = '#FF6B9D', 500);
+                }
+            } else if (input.value.length < 4) {
+                input.value += key;
+            }
+        }
+
+        // Render Kid Tasks
+        function renderKidTasks(kid) {
+            const data = getData();
+            const container = document.getElementById(`${kid}-tasks`);
+            container.innerHTML = '';
+
+            data[kid].tasks.forEach(task => {
+                const card = document.createElement('div');
+                card.className = `task-card ${kid} ${task.completed ? 'completed' : ''}`;
+                card.onclick = () => toggleTask(kid, task.id);
+
+                let subtasksHTML = '';
+                if (task.subtasks && task.subtasks.length > 0) {
+                    subtasksHTML = `<div class="task-subtasks">
+                        ${task.subtasks.map(st => `<div class="subtask">${st}</div>`).join('')}
+                    </div>`;
+                }
+
+                card.innerHTML = `
+                    <span class="task-emoji">${task.emoji}</span>
+                    <div class="task-title">${task.title}</div>
+                    ${subtasksHTML}
+                    <span class="checkmark">✅</span>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Toggle Task Completion
+        function toggleTask(kid, taskId) {
+            const data = getData();
+            const task = data[kid].tasks.find(t => t.id === taskId);
+            
+            if (!task.completed) {
+                task.completed = true;
+                data[kid].stars++;
+                data[kid].lastCompletionDate = new Date().toISOString();
+                
+                saveData(data);
+                renderKidTasks(kid);
+                updateKidStats(kid);
+                updateLandingStats();
+                showCompletionAnimation();
+            }
+        }
+
+        // Update Stats
+        function updateKidStats(kid) {
+            const data = getData();
+            document.getElementById(`${kid}-stars`).textContent = data[kid].stars;
+            document.getElementById(`${kid}-streak`).textContent = data[kid].streak;
+        }
+
+        function updateLandingStats() {
+            const data = getData();
+            document.getElementById('misha-stars-preview').textContent = `⭐ ${data.misha.stars}`;
+            document.getElementById('misha-streak-preview').textContent = `🔥 ${data.misha.streak}`;
+            document.getElementById('kamia-stars-preview').textContent = `⭐ ${data.kamia.stars}`;
+            document.getElementById('kamia-streak-preview').textContent = `🔥 ${data.kamia.streak}`;
+        }
+
+        // Completion Animation
+        function showCompletionAnimation() {
+            // Confetti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = ['#FF6B9D', '#9B59D0', '#FFA726', '#4CAF50', '#FFD700'][Math.floor(Math.random() * 5)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+
+            // Popup
+            const popup = document.createElement('div');
+            popup.className = 'completion-popup';
+            popup.innerHTML = `
+                <div class="popup-emoji">🎉</div>
+                <div class="popup-text">Great Job! +1 ⭐</div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 2000);
+        }
+
+        // Admin Functions
+        function selectKidAdmin(kid) {
+            currentAdminKid = kid;
+            document.getElementById('admin-misha-btn').classList.toggle('active', kid === 'misha');
+            document.getElementById('admin-kamia-btn').classList.toggle('active', kid === 'kamia');
+            document.getElementById('subtasks-group').style.display = kid === 'kamia' ? 'block' : 'none';
+            renderAdminTaskList();
+        }
+
+        function addTask() {
+            const emoji = document.getElementById('task-emoji').value.trim();
+            const title = document.getElementById('task-title').value.trim();
+            const subtasksText = document.getElementById('task-subtasks').value.trim();
+            const recurring = document.getElementById('task-recurring').checked;
+
+            if (!emoji || !title) {
+                alert('Please fill in emoji and title');
+                return;
+            }
+
+            const data = getData();
+            const maxId = Math.max(0, ...data[currentAdminKid].tasks.map(t => t.id));
+            
+            const task = {
+                id: maxId + 1,
+                emoji,
+                title,
+                completed: false,
+                recurring
+            };
+
+            if (currentAdminKid === 'kamia' && subtasksText) {
+                task.subtasks = subtasksText.split('\n').filter(s => s.trim());
+            }
+
+            data[currentAdminKid].tasks.push(task);
+            saveData(data);
+
+            // Clear form
+            document.getElementById('task-emoji').value = '';
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-subtasks').value = '';
+
+            renderAdminTaskList();
+        }
+
+        function deleteTask(taskId) {
+            if (!confirm('Delete this task?')) return;
+
+            const data = getData();
+            data[currentAdminKid].tasks = data[currentAdminKid].tasks.filter(t => t.id !== taskId);
+            saveData(data);
+            renderAdminTaskList();
+        }
+
+        function renderAdminTaskList() {
+            const data = getData();
+            const container = document.getElementById('admin-task-list');
+            const tasks = data[currentAdminKid].tasks;
+
+            if (tasks.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No tasks yet</p>';
+                return;
+            }
+
+            container.innerHTML = tasks.map(task => `
+                <div class="task-item">
+                    <span class="task-item-emoji">${task.emoji}</span>
+                    <div class="task-item-info">
+                        <strong>${task.title}</strong>
+                        ${task.subtasks ? `<div style="font-size: 0.9em; color: var(--text-secondary);">${task.subtasks.length} subtasks</div>` : ''}
+                        ${task.recurring ? '<div style="font-size: 0.8em; color: var(--success);">🔄 Daily</div>' : ''}
+                    </div>
+                    <div class="task-item-actions">
+                        <button class="btn-small btn-delete" onclick="deleteTask(${task.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminView() {
+            selectKidAdmin('misha');
+            
+            const data = getData();
+            const statsHTML = `
+                <div class="history-item">
+                    <strong>Misha's Streak:</strong>
+                    <span>🔥 ${data.misha.streak} days</span>
+                </div>
+                <div class="history-item">
+                    <strong>Misha's Stars Today:</strong>
+                    <span>⭐ ${data.misha.stars}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Kamia's Streak:</strong>
+                    <span>🔥 ${data.kamia.streak} days</span>
+                </div>
+                <div class="history-item">
+                    <strong>Kamia's Stars Today:</strong>
+                    <span>⭐ ${data.kamia.stars}</span>
+                </div>
+            `;
+            document.getElementById('admin-stats').innerHTML = statsHTML;
+        }
+
+        // Initialize
+        window.onload = function() {
+            checkDailyReset();
+            const data = getData();
+            document.body.setAttribute('data-theme', data.theme);
+            document.querySelector('.theme-toggle').textContent = data.theme === 'light' ? '🌙' : '☀️';
+            updateLandingStats();
+        };
+    </script>
+</body>
+</html>
