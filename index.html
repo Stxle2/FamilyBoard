@@ -24,6 +24,9 @@
             --card-bg: #FFFFFF;
             --shadow: rgba(0, 0, 0, 0.1);
             --overlay: rgba(0, 0, 0, 0.5);
+            --timer-green: #4CAF50;
+            --timer-yellow: #FFC107;
+            --timer-red: #FF5252;
         }
 
         [data-theme="dark"] {
@@ -144,6 +147,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .kid-view {
@@ -160,9 +164,13 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .kid-header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
         }
 
         .kid-info {
@@ -175,8 +183,19 @@
             font-size: 3em;
         }
 
+        .kid-name-group {
+            display: flex;
+            flex-direction: column;
+        }
+
         .kid-name {
             font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .kid-level {
+            font-size: 1em;
+            color: var(--warning);
             font-weight: bold;
         }
 
@@ -192,6 +211,170 @@
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        .xp-bar-container {
+            width: 100%;
+            height: 25px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .xp-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.5s ease;
+            border-radius: 15px;
+        }
+
+        .xp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 0.9em;
+            color: var(--text-primary);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .achievements-mini {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .achievement-badge {
+            font-size: 1.5em;
+            opacity: 0.3;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+        }
+
+        .achievement-badge.unlocked {
+            opacity: 1;
+            filter: grayscale(0%);
+            animation: badge-pop 0.5s ease;
+        }
+
+        @keyframes badge-pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* TIMER BLOCK */
+        .timer-block {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 30px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-block::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: timer-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes timer-glow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10px, 10px) scale(1.05); }
+        }
+
+        .timer-activity {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-countdown {
+            font-size: 5em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: color 0.5s;
+        }
+
+        .timer-countdown.green { color: #4CAF50; }
+        .timer-countdown.yellow { color: #FFC107; }
+        .timer-countdown.red { 
+            color: #FF5252;
+            animation: pulse-timer 1s infinite;
+        }
+
+        @keyframes pulse-timer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .timer-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .next-activity {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .no-timer {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .quick-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 20px;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.95);
         }
 
         .back-btn {
@@ -277,6 +460,13 @@
             line-height: 1.3;
         }
 
+        .task-xp {
+            font-size: 0.9em;
+            color: var(--success);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
         .task-subtasks {
             margin-top: 10px;
             font-size: 0.9em;
@@ -303,6 +493,116 @@
 
         .task-card.completed .checkmark {
             display: block;
+        }
+
+        /* REWARD SHOP */
+        .shop-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .shop-content {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .shop-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .shop-header h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .shop-balance {
+            font-size: 1.5em;
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .shop-items {
+            display: grid;
+            gap: 15px;
+        }
+
+        .shop-item {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .shop-item:active {
+            transform: scale(0.98);
+        }
+
+        .shop-item-info {
+            flex: 1;
+        }
+
+        .shop-item-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .shop-item-cost {
+            font-size: 1.1em;
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .shop-item-btn {
+            background: linear-gradient(135deg, #FF6B9D, #9B59D0);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shop-item-btn:disabled {
+            background: var(--text-secondary);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .shop-item-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .shop-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--text-primary);
         }
 
         /* Parent View */
@@ -406,7 +706,7 @@
             transform: scale(1.05);
         }
 
-        .task-form {
+        .task-form, .timer-form, .reward-form {
             display: grid;
             gap: 15px;
         }
@@ -422,13 +722,20 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             padding: 12px;
             border: 2px solid var(--text-secondary);
             border-radius: 12px;
             font-size: 1em;
             background: var(--bg-secondary);
             color: var(--text-primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
         .btn {
@@ -450,12 +757,12 @@
             transform: scale(0.95);
         }
 
-        .task-list {
+        .task-list, .timer-list, .reward-list {
             display: grid;
             gap: 10px;
         }
 
-        .task-item {
+        .task-item, .timer-item, .reward-item {
             background: var(--bg-secondary);
             padding: 15px;
             border-radius: 15px;
@@ -464,16 +771,16 @@
             align-items: center;
         }
 
-        .task-item-emoji {
+        .task-item-emoji, .timer-item-emoji, .reward-item-emoji {
             font-size: 2em;
             margin-right: 10px;
         }
 
-        .task-item-info {
+        .task-item-info, .timer-item-info, .reward-item-info {
             flex: 1;
         }
 
-        .task-item-actions {
+        .task-item-actions, .timer-item-actions, .reward-item-actions {
             display: flex;
             gap: 10px;
         }
@@ -501,6 +808,41 @@
             border-bottom: 1px solid var(--text-secondary);
             display: flex;
             justify-content: space-between;
+        }
+
+        .purchase-history {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            background: var(--bg-secondary);
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FF6B9D, #9B59D0);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         /* Confetti Animation */
@@ -557,6 +899,34 @@
             font-weight: bold;
         }
 
+        .popup-subtext {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        /* Level Up Animation */
+        .levelup-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            border-radius: 30px;
+            padding: 50px;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 10px 50px rgba(255, 215, 0, 0.5);
+            animation: popup 0.6s ease forwards;
+        }
+
+        .levelup-text {
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .profile-select {
@@ -564,6 +934,14 @@
             }
             
             .tasks-grid.misha {
+                grid-template-columns: 1fr;
+            }
+
+            .timer-countdown {
+                font-size: 3.5em;
+            }
+
+            .form-row {
                 grid-template-columns: 1fr;
             }
         }
@@ -579,18 +957,22 @@
             </div>
             <div class="profile-select">
                 <button class="profile-btn misha" onclick="showKidView('misha')">
-                    <span class="profile-avatar">👧</span>
+                    <span class="profile-avatar" id="misha-avatar-landing">👧</span>
                     <div class="profile-name">Misha</div>
                     <div class="profile-stats">
+                        <span id="misha-level-preview">Lv 1</span>
                         <span id="misha-stars-preview">⭐ 0</span>
+                        <span id="misha-coins-preview">💰 0</span>
                         <span id="misha-streak-preview">🔥 0</span>
                     </div>
                 </button>
                 <button class="profile-btn kamia" onclick="showKidView('kamia')">
-                    <span class="profile-avatar">👩</span>
+                    <span class="profile-avatar" id="kamia-avatar-landing">👩</span>
                     <div class="profile-name">Kamia</div>
                     <div class="profile-stats">
+                        <span id="kamia-level-preview">Lv 1</span>
                         <span id="kamia-stars-preview">⭐ 0</span>
+                        <span id="kamia-coins-preview">💰 0</span>
                         <span id="kamia-streak-preview">🔥 0</span>
                     </div>
                 </button>
@@ -604,17 +986,38 @@
         <!-- Misha's View -->
         <div id="misha-view" class="kid-view">
             <div class="kid-header">
-                <div class="kid-info">
-                    <span class="kid-avatar">👧</span>
-                    <div>
-                        <div class="kid-name">Misha</div>
+                <div class="kid-header-top">
+                    <div class="kid-info">
+                        <span class="kid-avatar" id="misha-avatar">👧</span>
+                        <div class="kid-name-group">
+                            <div class="kid-name">Misha</div>
+                            <div class="kid-level" id="misha-level">Level 1 Beginner</div>
+                        </div>
+                    </div>
+                    <div class="kid-stats">
+                        <div class="stat-item">⭐ <span id="misha-stars">0</span></div>
+                        <div class="stat-item">💰 <span id="misha-coins">0</span></div>
+                        <div class="stat-item">🔥 <span id="misha-streak">0</span></div>
                     </div>
                 </div>
-                <div class="kid-stats">
-                    <div class="stat-item">⭐ <span id="misha-stars">0</span></div>
-                    <div class="stat-item">🔥 <span id="misha-streak">0</span></div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar" id="misha-xp-bar"></div>
+                    <div class="xp-text" id="misha-xp-text">0 / 100 XP</div>
                 </div>
+                <div class="achievements-mini" id="misha-achievements"></div>
             </div>
+
+            <div id="misha-timer-display"></div>
+
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="openShop('misha')">
+                    🏪 Shop
+                </button>
+                <button class="quick-btn" onclick="showAchievements('misha')">
+                    🏆 Badges
+                </button>
+            </div>
+
             <div class="tasks-grid misha" id="misha-tasks"></div>
             <button class="back-btn" onclick="showLanding()">🏠</button>
         </div>
@@ -622,17 +1025,38 @@
         <!-- Kamia's View -->
         <div id="kamia-view" class="kid-view">
             <div class="kid-header">
-                <div class="kid-info">
-                    <span class="kid-avatar">👩</span>
-                    <div>
-                        <div class="kid-name">Kamia</div>
+                <div class="kid-header-top">
+                    <div class="kid-info">
+                        <span class="kid-avatar" id="kamia-avatar">👩</span>
+                        <div class="kid-name-group">
+                            <div class="kid-name">Kamia</div>
+                            <div class="kid-level" id="kamia-level">Level 1 Beginner</div>
+                        </div>
+                    </div>
+                    <div class="kid-stats">
+                        <div class="stat-item">⭐ <span id="kamia-stars">0</span></div>
+                        <div class="stat-item">💰 <span id="kamia-coins">0</span></div>
+                        <div class="stat-item">🔥 <span id="kamia-streak">0</span></div>
                     </div>
                 </div>
-                <div class="kid-stats">
-                    <div class="stat-item">⭐ <span id="kamia-stars">0</span></div>
-                    <div class="stat-item">🔥 <span id="kamia-streak">0</span></div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar" id="kamia-xp-bar"></div>
+                    <div class="xp-text" id="kamia-xp-text">0 / 100 XP</div>
                 </div>
+                <div class="achievements-mini" id="kamia-achievements"></div>
             </div>
+
+            <div id="kamia-timer-display"></div>
+
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="openShop('kamia')">
+                    🏪 Shop
+                </button>
+                <button class="quick-btn" onclick="showAchievements('kamia')">
+                    🏆 Badges
+                </button>
+            </div>
+
             <div class="tasks-grid" id="kamia-tasks"></div>
             <button class="back-btn" onclick="showLanding()">🏠</button>
         </div>
@@ -647,36 +1071,108 @@
                     <button onclick="selectKidAdmin('kamia')" id="admin-kamia-btn">Kamia</button>
                 </div>
 
-                <div class="task-form">
-                    <div class="form-group">
-                        <label>Emoji</label>
-                        <input type="text" id="task-emoji" placeholder="🦷">
-                    </div>
-                    <div class="form-group">
-                        <label>Task Title</label>
-                        <input type="text" id="task-title" placeholder="Brush Teeth">
-                    </div>
-                    <div class="form-group" id="subtasks-group" style="display: none;">
-                        <label>Subtasks (one per line)</label>
-                        <textarea id="task-subtasks" rows="3" placeholder="Morning routine&#10;Night routine"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="task-recurring" checked> Daily recurring
-                        </label>
-                    </div>
-                    <button class="btn btn-primary" onclick="addTask()">➕ Add Task</button>
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('tasks')">📋 Tasks</button>
+                    <button class="tab-btn" onclick="switchTab('timers')">⏰ Timer Blocks</button>
+                    <button class="tab-btn" onclick="switchTab('rewards')">🎁 Reward Shop</button>
+                    <button class="tab-btn" onclick="switchTab('stats')">📊 Stats</button>
                 </div>
-            </div>
 
-            <div class="admin-section">
-                <h2>Current Tasks</h2>
-                <div class="task-list" id="admin-task-list"></div>
-            </div>
+                <!-- Tasks Tab -->
+                <div id="tasks-tab" class="tab-content active">
+                    <div class="task-form">
+                        <div class="form-group">
+                            <label>Emoji</label>
+                            <input type="text" id="task-emoji" placeholder="🦷">
+                        </div>
+                        <div class="form-group">
+                            <label>Task Title</label>
+                            <input type="text" id="task-title" placeholder="Brush Teeth">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>XP Reward</label>
+                                <input type="number" id="task-xp" value="10" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Coins Reward</label>
+                                <input type="number" id="task-coins" value="5" min="1">
+                            </div>
+                        </div>
+                        <div class="form-group" id="subtasks-group" style="display: none;">
+                            <label>Subtasks (one per line)</label>
+                            <textarea id="task-subtasks" rows="3" placeholder="Morning routine&#10;Night routine"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="task-recurring" checked> Daily recurring
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="addTask()">➕ Add Task</button>
+                    </div>
 
-            <div class="admin-section">
-                <h2>📊 Statistics</h2>
-                <div id="admin-stats"></div>
+                    <h3 style="margin-top: 20px;">Current Tasks</h3>
+                    <div class="task-list" id="admin-task-list"></div>
+                </div>
+
+                <!-- Timer Blocks Tab -->
+                <div id="timers-tab" class="tab-content">
+                    <div class="timer-form">
+                        <div class="form-group">
+                            <label>Emoji</label>
+                            <input type="text" id="timer-emoji" placeholder="📚">
+                        </div>
+                        <div class="form-group">
+                            <label>Activity Name</label>
+                            <input type="text" id="timer-title" placeholder="Learning Time">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Start Time</label>
+                                <input type="time" id="timer-start">
+                            </div>
+                            <div class="form-group">
+                                <label>End Time</label>
+                                <input type="time" id="timer-end">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="timer-requires-tasks"> Requires all tasks complete to unlock
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="addTimer()">➕ Add Timer Block</button>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Timer Blocks</h3>
+                    <div class="timer-list" id="admin-timer-list"></div>
+                </div>
+
+                <!-- Rewards Tab -->
+                <div id="rewards-tab" class="tab-content">
+                    <div class="reward-form">
+                        <div class="form-group">
+                            <label>Reward Name</label>
+                            <input type="text" id="reward-name" placeholder="30min Extra iPad">
+                        </div>
+                        <div class="form-group">
+                            <label>Cost (Coins)</label>
+                            <input type="number" id="reward-cost" value="50" min="1">
+                        </div>
+                        <button class="btn btn-primary" onclick="addReward()">➕ Add Reward</button>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Available Rewards</h3>
+                    <div class="reward-list" id="admin-reward-list"></div>
+
+                    <h3 style="margin-top: 20px;">Purchase History</h3>
+                    <div class="purchase-history" id="admin-purchase-history"></div>
+                </div>
+
+                <!-- Stats Tab -->
+                <div id="stats-tab" class="tab-content">
+                    <div id="admin-stats"></div>
+                </div>
             </div>
 
             <button class="back-btn" onclick="showLanding()">🏠</button>
@@ -688,37 +1184,134 @@
         const DEFAULT_PIN = '1234';
         let currentAdminKid = 'misha';
         let currentView = 'landing';
+        let timerIntervals = {};
+
+        // Level titles
+        const LEVEL_TITLES = {
+            1: 'Beginner', 2: 'Explorer', 3: 'Achiever', 4: 'Champion',
+            5: 'Hero', 6: 'Legend', 7: 'Master', 8: 'Epic',
+            9: 'Superstar', 10: 'Ultimate'
+        };
+
+        // XP needed per level
+        function getXPForLevel(level) {
+            return level * 100;
+        }
+
+        // Avatar unlocks
+        const AVATAR_UNLOCKS = {
+            1: '👧', 2: '😊', 3: '🌟', 4: '🎨', 5: '🦄',
+            6: '🚀', 7: '👑', 8: '🏆', 9: '💎', 10: '🔥'
+        };
+
+        // Achievement definitions
+        const ACHIEVEMENTS = [
+            { id: 'earlybird', name: 'Early Bird', emoji: '🌅', check: (kid, data) => {
+                const now = new Date();
+                return now.getHours() < 9 && data[kid].tasks.every(t => t.completed);
+            }},
+            { id: 'perfectweek', name: 'Perfect Week', emoji: '🏆', check: (kid, data) => {
+                return data[kid].streak >= 7;
+            }},
+            { id: 'helperhero', name: 'Helper Hero', emoji: '🦸', check: (kid, data) => {
+                return data[kid].tasksCompletedToday >= 10;
+            }},
+            { id: 'speeddemon', name: 'Speed Demon', emoji: '⚡', check: (kid, data) => {
+                return data[kid].speedDemonUnlocked;
+            }}
+        ];
+
+        // Audio Context for sound effects
+        function playCompletionSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 523.25; // C5
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+                
+                setTimeout(() => {
+                    oscillator.frequency.value = 659.25; // E5
+                    const osc2 = audioContext.createOscillator();
+                    const gain2 = audioContext.createGain();
+                    osc2.connect(gain2);
+                    gain2.connect(audioContext.destination);
+                    osc2.frequency.value = 659.25;
+                    gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    osc2.start(audioContext.currentTime);
+                    osc2.stop(audioContext.currentTime + 0.5);
+                }, 100);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
 
         // Initialize data structure
         function initData() {
             const defaultData = {
                 pin: DEFAULT_PIN,
                 theme: 'light',
+                rewardShop: [
+                    { id: 1, name: '30min Extra iPad', cost: 50 },
+                    { id: 2, name: 'Pick Dinner', cost: 100 },
+                    { id: 3, name: 'Stay Up 30min Late', cost: 75 },
+                    { id: 4, name: 'Movie Night Choice', cost: 60 },
+                    { id: 5, name: 'Ice Cream Trip', cost: 80 }
+                ],
                 misha: {
                     tasks: [
-                        { id: 1, emoji: '🦷', title: 'Teeth', completed: false, recurring: true },
-                        { id: 2, emoji: '🎒', title: 'School Bag', completed: false, recurring: true },
-                        { id: 3, emoji: '🧹', title: 'Tidy Room', completed: false, recurring: true },
-                        { id: 4, emoji: '📚', title: 'Homework', completed: false, recurring: true },
-                        { id: 5, emoji: '🥣', title: 'Breakfast', completed: false, recurring: true },
-                        { id: 6, emoji: '😴', title: 'Bedtime', completed: false, recurring: true }
+                        { id: 1, emoji: '🦷', title: 'Teeth', completed: false, recurring: true, xp: 10, coins: 5 },
+                        { id: 2, emoji: '🎒', title: 'School Bag', completed: false, recurring: true, xp: 10, coins: 5 },
+                        { id: 3, emoji: '🧹', title: 'Tidy Room', completed: false, recurring: true, xp: 15, coins: 8 },
+                        { id: 4, emoji: '📚', title: 'Homework', completed: false, recurring: true, xp: 20, coins: 10 },
+                        { id: 5, emoji: '🥣', title: 'Breakfast', completed: false, recurring: true, xp: 10, coins: 5 },
+                        { id: 6, emoji: '😴', title: 'Bedtime', completed: false, recurring: true, xp: 10, coins: 5 }
+                    ],
+                    timerBlocks: [
+                        { id: 1, emoji: '📚', title: 'Learning Time', startTime: '10:00', endTime: '11:00', requiresTasks: false }
                     ],
                     stars: 0,
                     streak: 0,
-                    lastCompletionDate: null
+                    xp: 0,
+                    level: 1,
+                    coins: 0,
+                    achievements: [],
+                    purchaseHistory: [],
+                    lastCompletionDate: null,
+                    tasksCompletedToday: 0,
+                    speedDemonUnlocked: false
                 },
                 kamia: {
                     tasks: [
-                        { id: 1, emoji: '🦷', title: 'Morning Routine', completed: false, recurring: true, subtasks: ['Brush teeth', 'Wash face', 'Get dressed'] },
-                        { id: 2, emoji: '📚', title: 'Study Session', completed: false, recurring: true, subtasks: ['Math homework', 'Reading assignment'] },
-                        { id: 3, emoji: '🎵', title: 'Music Practice', completed: false, recurring: true },
-                        { id: 4, emoji: '🧹', title: 'Room Cleanup', completed: false, recurring: true, subtasks: ['Make bed', 'Organize desk', 'Laundry basket'] },
-                        { id: 5, emoji: '💪', title: 'Exercise', completed: false, recurring: true },
-                        { id: 6, emoji: '😴', title: 'Night Routine', completed: false, recurring: true, subtasks: ['Brush teeth', 'Pack bag', 'Set alarm'] }
+                        { id: 1, emoji: '🦷', title: 'Morning Routine', completed: false, recurring: true, xp: 15, coins: 8, subtasks: ['Brush teeth', 'Wash face', 'Get dressed'] },
+                        { id: 2, emoji: '📚', title: 'Study Session', completed: false, recurring: true, xp: 25, coins: 12, subtasks: ['Math homework', 'Reading assignment'] },
+                        { id: 3, emoji: '🎵', title: 'Music Practice', completed: false, recurring: true, xp: 20, coins: 10 },
+                        { id: 4, emoji: '🧹', title: 'Room Cleanup', completed: false, recurring: true, xp: 15, coins: 8, subtasks: ['Make bed', 'Organize desk', 'Laundry basket'] },
+                        { id: 5, emoji: '💪', title: 'Exercise', completed: false, recurring: true, xp: 20, coins: 10 },
+                        { id: 6, emoji: '😴', title: 'Night Routine', completed: false, recurring: true, xp: 15, coins: 8, subtasks: ['Brush teeth', 'Pack bag', 'Set alarm'] }
+                    ],
+                    timerBlocks: [
+                        { id: 1, emoji: '🎮', title: 'iPad Time', startTime: '16:00', endTime: '17:00', requiresTasks: true }
                     ],
                     stars: 0,
                     streak: 0,
-                    lastCompletionDate: null
+                    xp: 0,
+                    level: 1,
+                    coins: 0,
+                    achievements: [],
+                    purchaseHistory: [],
+                    lastCompletionDate: null,
+                    tasksCompletedToday: 0,
+                    speedDemonUnlocked: false
                 },
                 lastResetDate: new Date().toDateString()
             };
@@ -728,7 +1321,22 @@
                 localStorage.setItem('familyDashboard', JSON.stringify(defaultData));
                 return defaultData;
             }
-            return JSON.parse(stored);
+            
+            // Merge with defaults for new properties
+            const existingData = JSON.parse(stored);
+            return mergeDefaults(existingData, defaultData);
+        }
+
+        function mergeDefaults(existing, defaults) {
+            for (let key in defaults) {
+                if (typeof defaults[key] === 'object' && !Array.isArray(defaults[key]) && defaults[key] !== null) {
+                    existing[key] = existing[key] || {};
+                    mergeDefaults(existing[key], defaults[key]);
+                } else if (existing[key] === undefined) {
+                    existing[key] = defaults[key];
+                }
+            }
+            return existing;
         }
 
         function saveData(data) {
@@ -760,10 +1368,14 @@
             const today = new Date().toDateString();
             
             if (data.lastResetDate !== today) {
-                // Check if all tasks were completed yesterday
                 ['misha', 'kamia'].forEach(kid => {
                     const allCompleted = data[kid].tasks.every(t => t.completed);
-                    if (allCompleted && data[kid].lastCompletionDate) {
+                    
+                    // Bonus XP and coins for completing all tasks
+                    if (allCompleted && data[kid].tasksCompletedToday > 0) {
+                        data[kid].xp += 50; // Daily bonus XP
+                        data[kid].coins += 20; // Daily bonus coins
+                        
                         const lastDate = new Date(data[kid].lastCompletionDate);
                         const yesterday = new Date();
                         yesterday.setDate(yesterday.getDate() - 1);
@@ -784,8 +1396,10 @@
                         }
                     });
 
-                    // Reset daily stars
+                    // Reset daily counters
                     data[kid].stars = 0;
+                    data[kid].tasksCompletedToday = 0;
+                    data[kid].speedDemonUnlocked = false;
                 });
 
                 data.lastResetDate = today;
@@ -793,8 +1407,98 @@
             }
         }
 
+        // XP and Level System
+        function addXP(kid, amount) {
+            const data = getData();
+            data[kid].xp += amount;
+            
+            // Check for level up
+            const xpNeeded = getXPForLevel(data[kid].level);
+            if (data[kid].xp >= xpNeeded) {
+                data[kid].xp -= xpNeeded;
+                data[kid].level++;
+                saveData(data);
+                showLevelUpAnimation(kid);
+                updateKidStats(kid);
+                return true;
+            }
+            
+            saveData(data);
+            updateKidStats(kid);
+            return false;
+        }
+
+        function showLevelUpAnimation(kid) {
+            const data = getData();
+            const level = data[kid].level;
+            const title = LEVEL_TITLES[level] || 'Master';
+            
+            playCompletionSound();
+            
+            const popup = document.createElement('div');
+            popup.className = 'levelup-popup';
+            popup.innerHTML = `
+                <div class="levelup-text">LEVEL UP!</div>
+                <div style="font-size: 3em; margin: 20px 0;">${AVATAR_UNLOCKS[level] || '⭐'}</div>
+                <div style="font-size: 2em;">Level ${level}</div>
+                <div style="font-size: 1.5em; opacity: 0.9;">${title}</div>
+            `;
+            document.body.appendChild(popup);
+            
+            // Confetti
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = ['#FFD700', '#FFA500', '#FF6B9D', '#9B59D0', '#4CAF50'][Math.floor(Math.random() * 5)];
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 20);
+            }
+            
+            setTimeout(() => popup.remove(), 3000);
+        }
+
+        // Check and unlock achievements
+        function checkAchievements(kid) {
+            const data = getData();
+            let newAchievements = false;
+            
+            ACHIEVEMENTS.forEach(ach => {
+                if (!data[kid].achievements.includes(ach.id) && ach.check(kid, data)) {
+                    data[kid].achievements.push(ach.id);
+                    data[kid].xp += 30; // Bonus XP for achievement
+                    data[kid].coins += 15; // Bonus coins
+                    newAchievements = true;
+                    
+                    // Show achievement popup
+                    setTimeout(() => {
+                        const popup = document.createElement('div');
+                        popup.className = 'completion-popup';
+                        popup.innerHTML = `
+                            <div class="popup-emoji">${ach.emoji}</div>
+                            <div class="popup-text">Achievement Unlocked!</div>
+                            <div class="popup-subtext">${ach.name}</div>
+                        `;
+                        document.body.appendChild(popup);
+                        setTimeout(() => popup.remove(), 2500);
+                    }, 1500);
+                }
+            });
+            
+            if (newAchievements) {
+                saveData(data);
+                updateKidStats(kid);
+            }
+        }
+
         // Navigation
         function showLanding() {
+            // Stop all timers
+            Object.keys(timerIntervals).forEach(key => clearInterval(timerIntervals[key]));
+            timerIntervals = {};
+            
             document.getElementById('landing').style.display = 'block';
             document.getElementById('misha-view').classList.remove('active');
             document.getElementById('kamia-view').classList.remove('active');
@@ -810,6 +1514,8 @@
             currentView = kid;
             renderKidTasks(kid);
             updateKidStats(kid);
+            renderTimerDisplay(kid);
+            startTimerUpdates(kid);
         }
 
         function showParentView() {
@@ -864,6 +1570,135 @@
             }
         }
 
+        // Timer Display and Logic
+        function renderTimerDisplay(kid) {
+            const data = getData();
+            const container = document.getElementById(`${kid}-timer-display`);
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            
+            let activeBlock = null;
+            let nextBlock = null;
+            
+            // Find active or next timer block
+            data[kid].timerBlocks.forEach(block => {
+                const [startH, startM] = block.startTime.split(':').map(Number);
+                const [endH, endM] = block.endTime.split(':').map(Number);
+                const startMinutes = startH * 60 + startM;
+                const endMinutes = endH * 60 + endM;
+                
+                if (currentMinutes >= startMinutes && currentMinutes < endMinutes) {
+                    activeBlock = { ...block, startMinutes, endMinutes };
+                } else if (currentMinutes < startMinutes) {
+                    if (!nextBlock || startMinutes < nextBlock.startMinutes) {
+                        nextBlock = { ...block, startMinutes, endMinutes };
+                    }
+                }
+            });
+            
+            if (activeBlock) {
+                // Check if tasks are required and completed
+                const tasksRequired = activeBlock.requiresTasks;
+                const allTasksComplete = data[kid].tasks.every(t => t.completed);
+                
+                if (tasksRequired && !allTasksComplete) {
+                    container.innerHTML = `
+                        <div class="no-timer">
+                            <div style="font-size: 3em; margin-bottom: 15px;">🔒</div>
+                            <div style="font-size: 1.3em; font-weight: bold; margin-bottom: 10px;">
+                                ${activeBlock.emoji} ${activeBlock.title} is locked!
+                            </div>
+                            <div style="font-size: 1.1em;">
+                                Complete all tasks to unlock this activity! ✨
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const remaining = (activeBlock.endMinutes - currentMinutes) * 60;
+                    renderActiveTimer(container, activeBlock, remaining, kid);
+                }
+            } else if (nextBlock) {
+                const minutesUntil = nextBlock.startMinutes - currentMinutes;
+                container.innerHTML = `
+                    <div class="no-timer">
+                        <div style="font-size: 3em; margin-bottom: 15px;">⏰</div>
+                        <div style="font-size: 1.3em; font-weight: bold;">
+                            ${nextBlock.emoji} ${nextBlock.title}
+                        </div>
+                        <div style="font-size: 1.1em; margin-top: 10px;">
+                            Starts in ${minutesUntil} minute${minutesUntil !== 1 ? 's' : ''}!
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="no-timer">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🌙</div>
+                        <div style="font-size: 1.3em;">No scheduled activities right now</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderActiveTimer(container, block, remainingSeconds, kid) {
+            const data = getData();
+            const totalDuration = (block.endMinutes - block.startMinutes) * 60;
+            const progress = 1 - (remainingSeconds / totalDuration);
+            
+            let colorClass = 'green';
+            if (progress > 0.8) colorClass = 'red';
+            else if (progress > 0.5) colorClass = 'yellow';
+            
+            const minutes = Math.floor(remainingSeconds / 60);
+            const seconds = remainingSeconds % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Find next block
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            let nextBlock = null;
+            data[kid].timerBlocks.forEach(b => {
+                const [startH, startM] = b.startTime.split(':').map(Number);
+                const startMinutes = startH * 60 + startM;
+                if (startMinutes > block.endMinutes) {
+                    if (!nextBlock || startMinutes < nextBlock.startMinutes) {
+                        nextBlock = { ...b, startMinutes };
+                    }
+                }
+            });
+            
+            let nextActivityHTML = '';
+            if (nextBlock) {
+                const minutesUntilNext = nextBlock.startMinutes - currentMinutes;
+                nextActivityHTML = `
+                    <div class="next-activity">
+                        Up next: ${nextBlock.emoji} ${nextBlock.title} in ${minutesUntilNext} minutes!
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = `
+                <div class="timer-block">
+                    <div class="timer-activity">${block.emoji} ${block.title}</div>
+                    <div class="timer-countdown ${colorClass}" id="${kid}-timer-countdown">${display}</div>
+                    <div class="timer-label">Time Remaining</div>
+                    ${nextActivityHTML}
+                </div>
+            `;
+        }
+
+        function startTimerUpdates(kid) {
+            if (timerIntervals[kid]) {
+                clearInterval(timerIntervals[kid]);
+            }
+            
+            timerIntervals[kid] = setInterval(() => {
+                if (currentView === kid) {
+                    renderTimerDisplay(kid);
+                }
+            }, 1000);
+        }
+
         // Render Kid Tasks
         function renderKidTasks(kid) {
             const data = getData();
@@ -882,10 +1717,13 @@
                     </div>`;
                 }
 
+                const xpDisplay = `<div class="task-xp">+${task.xp} XP • +${task.coins} 💰</div>`;
+
                 card.innerHTML = `
                     <span class="task-emoji">${task.emoji}</span>
                     <div class="task-title">${task.title}</div>
                     ${subtasksHTML}
+                    ${!task.completed ? xpDisplay : ''}
                     <span class="checkmark">✅</span>
                 `;
 
@@ -899,35 +1737,89 @@
             const task = data[kid].tasks.find(t => t.id === taskId);
             
             if (!task.completed) {
+                const taskCreatedTime = Date.now(); // In real app, track when task appears
+                
                 task.completed = true;
                 data[kid].stars++;
+                data[kid].coins += task.coins || 5;
+                data[kid].tasksCompletedToday++;
                 data[kid].lastCompletionDate = new Date().toISOString();
                 
+                // Check for speed demon (task done within 1 minute of appearing)
+                // For demo, randomly unlock this sometimes
+                if (Math.random() < 0.2) {
+                    data[kid].speedDemonUnlocked = true;
+                }
+                
                 saveData(data);
+                
+                const leveledUp = addXP(kid, task.xp || 10);
+                
                 renderKidTasks(kid);
                 updateKidStats(kid);
                 updateLandingStats();
-                showCompletionAnimation();
+                renderTimerDisplay(kid); // Update in case this unlocks a timer
+                
+                if (!leveledUp) {
+                    showCompletionAnimation(task.xp, task.coins);
+                }
+                
+                // Check achievements after a delay to allow animations to play
+                setTimeout(() => checkAchievements(kid), 2000);
             }
         }
 
         // Update Stats
         function updateKidStats(kid) {
             const data = getData();
-            document.getElementById(`${kid}-stars`).textContent = data[kid].stars;
-            document.getElementById(`${kid}-streak`).textContent = data[kid].streak;
+            const kidData = data[kid];
+            
+            // Update level and title
+            const levelTitle = LEVEL_TITLES[kidData.level] || 'Master';
+            document.getElementById(`${kid}-level`).textContent = `Level ${kidData.level} ${levelTitle}`;
+            
+            // Update avatar based on level
+            const avatar = AVATAR_UNLOCKS[kidData.level] || '👧';
+            document.getElementById(`${kid}-avatar`).textContent = avatar;
+            
+            // Update stats
+            document.getElementById(`${kid}-stars`).textContent = kidData.stars;
+            document.getElementById(`${kid}-coins`).textContent = kidData.coins;
+            document.getElementById(`${kid}-streak`).textContent = kidData.streak;
+            
+            // Update XP bar
+            const xpNeeded = getXPForLevel(kidData.level);
+            const xpPercent = (kidData.xp / xpNeeded) * 100;
+            document.getElementById(`${kid}-xp-bar`).style.width = xpPercent + '%';
+            document.getElementById(`${kid}-xp-text`).textContent = `${kidData.xp} / ${xpNeeded} XP`;
+            
+            // Update achievements display
+            const achContainer = document.getElementById(`${kid}-achievements`);
+            achContainer.innerHTML = ACHIEVEMENTS.map(ach => {
+                const unlocked = kidData.achievements.includes(ach.id);
+                return `<span class="achievement-badge ${unlocked ? 'unlocked' : ''}" title="${ach.name}">${ach.emoji}</span>`;
+            }).join('');
         }
 
         function updateLandingStats() {
             const data = getData();
-            document.getElementById('misha-stars-preview').textContent = `⭐ ${data.misha.stars}`;
-            document.getElementById('misha-streak-preview').textContent = `🔥 ${data.misha.streak}`;
-            document.getElementById('kamia-stars-preview').textContent = `⭐ ${data.kamia.stars}`;
-            document.getElementById('kamia-streak-preview').textContent = `🔥 ${data.kamia.streak}`;
+            ['misha', 'kamia'].forEach(kid => {
+                const kidData = data[kid];
+                const levelTitle = LEVEL_TITLES[kidData.level] || 'Master';
+                const avatar = AVATAR_UNLOCKS[kidData.level] || (kid === 'misha' ? '👧' : '👩');
+                
+                document.getElementById(`${kid}-avatar-landing`).textContent = avatar;
+                document.getElementById(`${kid}-level-preview`).textContent = `Lv ${kidData.level}`;
+                document.getElementById(`${kid}-stars-preview`).textContent = `⭐ ${kidData.stars}`;
+                document.getElementById(`${kid}-coins-preview`).textContent = `💰 ${kidData.coins}`;
+                document.getElementById(`${kid}-streak-preview`).textContent = `🔥 ${kidData.streak}`;
+            });
         }
 
         // Completion Animation
-        function showCompletionAnimation() {
+        function showCompletionAnimation(xp, coins) {
+            playCompletionSound();
+            
             // Confetti
             for (let i = 0; i < 50; i++) {
                 setTimeout(() => {
@@ -946,24 +1838,167 @@
             popup.className = 'completion-popup';
             popup.innerHTML = `
                 <div class="popup-emoji">🎉</div>
-                <div class="popup-text">Great Job! +1 ⭐</div>
+                <div class="popup-text">Great Job!</div>
+                <div class="popup-subtext">+${xp} XP • +${coins} 💰</div>
             `;
             document.body.appendChild(popup);
             setTimeout(() => popup.remove(), 2000);
         }
 
+        // Reward Shop
+        function openShop(kid) {
+            const data = getData();
+            const kidData = data[kid];
+            
+            const modal = document.createElement('div');
+            modal.className = 'shop-modal';
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            };
+            
+            const shopItems = data.rewardShop.map(item => {
+                const canBuy = kidData.coins >= item.cost;
+                return `
+                    <div class="shop-item">
+                        <div class="shop-item-info">
+                            <div class="shop-item-name">${item.name}</div>
+                            <div class="shop-item-cost">💰 ${item.cost}</div>
+                        </div>
+                        <button class="shop-item-btn" ${!canBuy ? 'disabled' : ''} onclick="buyReward('${kid}', ${item.id})">
+                            Buy
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            modal.innerHTML = `
+                <div class="shop-content">
+                    <button class="shop-close" onclick="this.closest('.shop-modal').remove()">✕</button>
+                    <div class="shop-header">
+                        <h2>🏪 Reward Shop</h2>
+                        <div class="shop-balance">💰 ${kidData.coins} coins</div>
+                    </div>
+                    <div class="shop-items">
+                        ${shopItems}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function buyReward(kid, rewardId) {
+            const data = getData();
+            const reward = data.rewardShop.find(r => r.id === rewardId);
+            
+            if (!reward || data[kid].coins < reward.cost) {
+                return;
+            }
+            
+            data[kid].coins -= reward.cost;
+            data[kid].purchaseHistory.push({
+                rewardName: reward.name,
+                cost: reward.cost,
+                date: new Date().toISOString()
+            });
+            
+            saveData(data);
+            updateKidStats(kid);
+            
+            // Close and reopen shop to update
+            document.querySelector('.shop-modal').remove();
+            
+            // Show success message
+            const popup = document.createElement('div');
+            popup.className = 'completion-popup';
+            popup.innerHTML = `
+                <div class="popup-emoji">🎁</div>
+                <div class="popup-text">Purchased!</div>
+                <div class="popup-subtext">${reward.name}</div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 2000);
+        }
+
+        // Show achievements modal
+        function showAchievements(kid) {
+            const data = getData();
+            const kidData = data[kid];
+            
+            const modal = document.createElement('div');
+            modal.className = 'shop-modal';
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            };
+            
+            const achievementsList = ACHIEVEMENTS.map(ach => {
+                const unlocked = kidData.achievements.includes(ach.id);
+                return `
+                    <div class="shop-item" style="${!unlocked ? 'opacity: 0.5; filter: grayscale(100%);' : ''}">
+                        <div class="shop-item-info">
+                            <div style="font-size: 2em; margin-right: 15px;">${ach.emoji}</div>
+                            <div>
+                                <div class="shop-item-name">${ach.name}</div>
+                                <div style="font-size: 0.9em; color: var(--text-secondary);">
+                                    ${unlocked ? '✅ Unlocked!' : '🔒 Locked'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            modal.innerHTML = `
+                <div class="shop-content">
+                    <button class="shop-close" onclick="this.closest('.shop-modal').remove()">✕</button>
+                    <div class="shop-header">
+                        <h2>🏆 Achievements</h2>
+                        <div>${kidData.achievements.length} / ${ACHIEVEMENTS.length} unlocked</div>
+                    </div>
+                    <div class="shop-items">
+                        ${achievementsList}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
         // Admin Functions
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            if (tabName === 'stats') {
+                renderAdminStats();
+            } else if (tabName === 'timers') {
+                renderAdminTimerList();
+            } else if (tabName === 'rewards') {
+                renderAdminRewardList();
+            }
+        }
+
         function selectKidAdmin(kid) {
             currentAdminKid = kid;
             document.getElementById('admin-misha-btn').classList.toggle('active', kid === 'misha');
             document.getElementById('admin-kamia-btn').classList.toggle('active', kid === 'kamia');
             document.getElementById('subtasks-group').style.display = kid === 'kamia' ? 'block' : 'none';
             renderAdminTaskList();
+            renderAdminTimerList();
         }
 
         function addTask() {
             const emoji = document.getElementById('task-emoji').value.trim();
             const title = document.getElementById('task-title').value.trim();
+            const xp = parseInt(document.getElementById('task-xp').value) || 10;
+            const coins = parseInt(document.getElementById('task-coins').value) || 5;
             const subtasksText = document.getElementById('task-subtasks').value.trim();
             const recurring = document.getElementById('task-recurring').checked;
 
@@ -980,7 +2015,9 @@
                 emoji,
                 title,
                 completed: false,
-                recurring
+                recurring,
+                xp,
+                coins
             };
 
             if (currentAdminKid === 'kamia' && subtasksText) {
@@ -993,6 +2030,8 @@
             // Clear form
             document.getElementById('task-emoji').value = '';
             document.getElementById('task-title').value = '';
+            document.getElementById('task-xp').value = '10';
+            document.getElementById('task-coins').value = '5';
             document.getElementById('task-subtasks').value = '';
 
             renderAdminTaskList();
@@ -1022,6 +2061,7 @@
                     <span class="task-item-emoji">${task.emoji}</span>
                     <div class="task-item-info">
                         <strong>${task.title}</strong>
+                        <div style="font-size: 0.9em; color: var(--success);">+${task.xp} XP • +${task.coins} 💰</div>
                         ${task.subtasks ? `<div style="font-size: 0.9em; color: var(--text-secondary);">${task.subtasks.length} subtasks</div>` : ''}
                         ${task.recurring ? '<div style="font-size: 0.8em; color: var(--success);">🔄 Daily</div>' : ''}
                     </div>
@@ -1032,29 +2072,230 @@
             `).join('');
         }
 
-        function renderAdminView() {
-            selectKidAdmin('misha');
+        // Timer Block Management
+        function addTimer() {
+            const emoji = document.getElementById('timer-emoji').value.trim();
+            const title = document.getElementById('timer-title').value.trim();
+            const startTime = document.getElementById('timer-start').value;
+            const endTime = document.getElementById('timer-end').value;
+            const requiresTasks = document.getElementById('timer-requires-tasks').checked;
+
+            if (!emoji || !title || !startTime || !endTime) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const data = getData();
+            const maxId = Math.max(0, ...data[currentAdminKid].timerBlocks.map(t => t.id));
             
+            data[currentAdminKid].timerBlocks.push({
+                id: maxId + 1,
+                emoji,
+                title,
+                startTime,
+                endTime,
+                requiresTasks
+            });
+            
+            saveData(data);
+
+            // Clear form
+            document.getElementById('timer-emoji').value = '';
+            document.getElementById('timer-title').value = '';
+            document.getElementById('timer-start').value = '';
+            document.getElementById('timer-end').value = '';
+            document.getElementById('timer-requires-tasks').checked = false;
+
+            renderAdminTimerList();
+        }
+
+        function deleteTimer(timerId) {
+            if (!confirm('Delete this timer block?')) return;
+
+            const data = getData();
+            data[currentAdminKid].timerBlocks = data[currentAdminKid].timerBlocks.filter(t => t.id !== timerId);
+            saveData(data);
+            renderAdminTimerList();
+        }
+
+        function renderAdminTimerList() {
+            const data = getData();
+            const container = document.getElementById('admin-timer-list');
+            const timers = data[currentAdminKid].timerBlocks;
+
+            if (timers.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No timer blocks yet</p>';
+                return;
+            }
+
+            container.innerHTML = timers.map(timer => `
+                <div class="timer-item">
+                    <span class="timer-item-emoji">${timer.emoji}</span>
+                    <div class="timer-item-info">
+                        <strong>${timer.title}</strong>
+                        <div style="font-size: 0.9em; color: var(--text-secondary);">
+                            ${timer.startTime} - ${timer.endTime}
+                        </div>
+                        ${timer.requiresTasks ? '<div style="font-size: 0.8em; color: var(--warning);">🔒 Requires tasks complete</div>' : ''}
+                    </div>
+                    <div class="timer-item-actions">
+                        <button class="btn-small btn-delete" onclick="deleteTimer(${timer.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Reward Management
+        function addReward() {
+            const name = document.getElementById('reward-name').value.trim();
+            const cost = parseInt(document.getElementById('reward-cost').value) || 50;
+
+            if (!name) {
+                alert('Please enter a reward name');
+                return;
+            }
+
+            const data = getData();
+            const maxId = Math.max(0, ...data.rewardShop.map(r => r.id));
+            
+            data.rewardShop.push({
+                id: maxId + 1,
+                name,
+                cost
+            });
+            
+            saveData(data);
+
+            // Clear form
+            document.getElementById('reward-name').value = '';
+            document.getElementById('reward-cost').value = '50';
+
+            renderAdminRewardList();
+        }
+
+        function deleteReward(rewardId) {
+            if (!confirm('Delete this reward?')) return;
+
+            const data = getData();
+            data.rewardShop = data.rewardShop.filter(r => r.id !== rewardId);
+            saveData(data);
+            renderAdminRewardList();
+        }
+
+        function renderAdminRewardList() {
+            const data = getData();
+            const rewardContainer = document.getElementById('admin-reward-list');
+            const historyContainer = document.getElementById('admin-purchase-history');
+
+            // Rewards list
+            if (data.rewardShop.length === 0) {
+                rewardContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No rewards yet</p>';
+            } else {
+                rewardContainer.innerHTML = data.rewardShop.map(reward => `
+                    <div class="reward-item">
+                        <div class="reward-item-info">
+                            <strong>${reward.name}</strong>
+                            <div style="font-size: 0.9em; color: var(--warning);">💰 ${reward.cost}</div>
+                        </div>
+                        <div class="reward-item-actions">
+                            <button class="btn-small btn-delete" onclick="deleteReward(${reward.id})">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Purchase history
+            const allPurchases = [
+                ...data.misha.purchaseHistory.map(p => ({ ...p, kid: 'Misha' })),
+                ...data.kamia.purchaseHistory.map(p => ({ ...p, kid: 'Kamia' }))
+            ].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (allPurchases.length === 0) {
+                historyContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No purchases yet</p>';
+            } else {
+                historyContainer.innerHTML = allPurchases.map(purchase => {
+                    const date = new Date(purchase.date);
+                    const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                    return `
+                        <div class="history-item">
+                            <div>
+                                <strong>${purchase.kid}</strong> bought <strong>${purchase.rewardName}</strong>
+                                <div style="font-size: 0.8em; color: var(--text-secondary);">${dateStr}</div>
+                            </div>
+                            <span style="color: var(--warning);">-${purchase.cost} 💰</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function renderAdminStats() {
             const data = getData();
             const statsHTML = `
+                <h3>Misha</h3>
                 <div class="history-item">
-                    <strong>Misha's Streak:</strong>
+                    <strong>Level:</strong>
+                    <span>Level ${data.misha.level} (${LEVEL_TITLES[data.misha.level]})</span>
+                </div>
+                <div class="history-item">
+                    <strong>XP:</strong>
+                    <span>${data.misha.xp} / ${getXPForLevel(data.misha.level)}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Coins:</strong>
+                    <span>💰 ${data.misha.coins}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Streak:</strong>
                     <span>🔥 ${data.misha.streak} days</span>
                 </div>
                 <div class="history-item">
-                    <strong>Misha's Stars Today:</strong>
-                    <span>⭐ ${data.misha.stars}</span>
+                    <strong>Achievements:</strong>
+                    <span>${data.misha.achievements.length} / ${ACHIEVEMENTS.length}</span>
+                </div>
+                
+                <h3 style="margin-top: 30px;">Kamia</h3>
+                <div class="history-item">
+                    <strong>Level:</strong>
+                    <span>Level ${data.kamia.level} (${LEVEL_TITLES[data.kamia.level]})</span>
                 </div>
                 <div class="history-item">
-                    <strong>Kamia's Streak:</strong>
+                    <strong>XP:</strong>
+                    <span>${data.kamia.xp} / ${getXPForLevel(data.kamia.level)}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Coins:</strong>
+                    <span>💰 ${data.kamia.coins}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Streak:</strong>
                     <span>🔥 ${data.kamia.streak} days</span>
                 </div>
                 <div class="history-item">
-                    <strong>Kamia's Stars Today:</strong>
-                    <span>⭐ ${data.kamia.stars}</span>
+                    <strong>Achievements:</strong>
+                    <span>${data.kamia.achievements.length} / ${ACHIEVEMENTS.length}</span>
+                </div>
+                
+                <h3 style="margin-top: 30px;">Weekly Leaderboard 🏆</h3>
+                <div class="history-item" style="font-size: 1.3em; background: linear-gradient(135deg, #FFD700, #FFA500); color: white; border-radius: 10px; padding: 15px;">
+                    <strong>${data.misha.xp > data.kamia.xp ? 'Misha' : 'Kamia'} is in the lead!</strong>
+                    <span>${Math.max(data.misha.xp, data.kamia.xp)} XP</span>
+                </div>
+                <div class="history-item">
+                    <strong>Misha:</strong>
+                    <span>${data.misha.xp} XP</span>
+                </div>
+                <div class="history-item">
+                    <strong>Kamia:</strong>
+                    <span>${data.kamia.xp} XP</span>
                 </div>
             `;
             document.getElementById('admin-stats').innerHTML = statsHTML;
+        }
+
+        function renderAdminView() {
+            selectKidAdmin('misha');
+            switchTab('tasks');
         }
 
         // Initialize
@@ -1066,5 +2307,7 @@
             updateLandingStats();
         };
     </script>
+    
+    <!-- Built by NeoClawLabs 🦀🦉 -->
 </body>
 </html>
