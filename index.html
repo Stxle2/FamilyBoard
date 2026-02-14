@@ -150,6 +150,146 @@
             flex-wrap: wrap;
         }
 
+        /* EXPLORER MODE */
+        .explorer-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .explorer-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: explorer-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes explorer-glow {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        .explorer-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .explorer-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .explorer-subtitle {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .discovery-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .discovery-card:active {
+            transform: scale(0.98);
+        }
+
+        .discovery-card.locked {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            animation: treasure-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes treasure-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5); }
+        }
+
+        .discovery-locked-content {
+            text-align: center;
+        }
+
+        .discovery-treasure {
+            font-size: 4em;
+            margin-bottom: 15px;
+            animation: treasure-bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes treasure-bounce {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .discovery-locked-text {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .discovery-unlocked-content {
+            text-align: center;
+            animation: reveal-fade 0.5s ease;
+        }
+
+        @keyframes reveal-fade {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .discovery-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .discovery-topic {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .discovery-fact {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .discovery-reward {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--success);
+            padding: 10px 20px;
+            background: #E8F5E9;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .discovery-completed {
+            opacity: 0.7;
+            cursor: default;
+        }
+
         .kid-view {
             display: none;
         }
@@ -379,16 +519,16 @@
 
         .back-btn {
             background: var(--card-bg);
-            border: none;
+            border: 3px solid var(--accent-misha);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5em;
+            width: 70px;
+            height: 70px;
+            font-size: 2.2em;
             cursor: pointer;
-            box-shadow: 0 4px 15px var(--shadow);
+            box-shadow: 0 6px 20px var(--shadow);
             position: fixed;
-            bottom: 20px;
-            left: 20px;
+            bottom: 24px;
+            left: 24px;
             z-index: 100;
             transition: transform 0.2s;
         }
@@ -645,6 +785,8 @@
             margin: 20px 0;
             width: 200px;
             letter-spacing: 15px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .pin-buttons {
@@ -962,8 +1104,8 @@
                     <div class="profile-stats">
                         <span id="misha-level-preview">Lv 1</span>
                         <span id="misha-stars-preview">⭐ 0</span>
-                        <span id="misha-coins-preview">💰 0</span>
-                        <span id="misha-streak-preview">🔥 0</span>
+                        <span id="misha-coins-preview">🪙 0</span>
+                        <span id="misha-crabs-preview">🦀 0</span>
                     </div>
                 </button>
                 <button class="profile-btn kamia" onclick="showKidView('kamia')">
@@ -972,8 +1114,8 @@
                     <div class="profile-stats">
                         <span id="kamia-level-preview">Lv 1</span>
                         <span id="kamia-stars-preview">⭐ 0</span>
-                        <span id="kamia-coins-preview">💰 0</span>
-                        <span id="kamia-streak-preview">🔥 0</span>
+                        <span id="kamia-coins-preview">🪙 0</span>
+                        <span id="kamia-crabs-preview">🦀 0</span>
                     </div>
                 </button>
                 <button class="profile-btn parent" onclick="showParentView()">
@@ -996,7 +1138,8 @@
                     </div>
                     <div class="kid-stats">
                         <div class="stat-item">⭐ <span id="misha-stars">0</span></div>
-                        <div class="stat-item">💰 <span id="misha-coins">0</span></div>
+                        <div class="stat-item">🪙 <span id="misha-coins">0</span></div>
+                        <div class="stat-item">🦀 <span id="misha-crabs">0</span></div>
                         <div class="stat-item">🔥 <span id="misha-streak">0</span></div>
                     </div>
                 </div>
@@ -1008,6 +1151,14 @@
             </div>
 
             <div id="misha-timer-display"></div>
+
+            <div class="explorer-section">
+                <div class="explorer-header">
+                    <div class="explorer-title">🔭 Daily Discovery</div>
+                    <div class="explorer-subtitle">Learn something amazing today!</div>
+                </div>
+                <div id="misha-discovery-card"></div>
+            </div>
 
             <div class="quick-actions">
                 <button class="quick-btn" onclick="openShop('misha')">
@@ -1035,7 +1186,8 @@
                     </div>
                     <div class="kid-stats">
                         <div class="stat-item">⭐ <span id="kamia-stars">0</span></div>
-                        <div class="stat-item">💰 <span id="kamia-coins">0</span></div>
+                        <div class="stat-item">🪙 <span id="kamia-coins">0</span></div>
+                        <div class="stat-item">🦀 <span id="kamia-crabs">0</span></div>
                         <div class="stat-item">🔥 <span id="kamia-streak">0</span></div>
                     </div>
                 </div>
@@ -1047,6 +1199,14 @@
             </div>
 
             <div id="kamia-timer-display"></div>
+
+            <div class="explorer-section">
+                <div class="explorer-header">
+                    <div class="explorer-title">🔭 Daily Discovery</div>
+                    <div class="explorer-subtitle">Unlock today's fascinating fact!</div>
+                </div>
+                <div id="kamia-discovery-card"></div>
+            </div>
 
             <div class="quick-actions">
                 <button class="quick-btn" onclick="openShop('kamia')">
@@ -1075,6 +1235,7 @@
                     <button class="tab-btn active" onclick="switchTab('tasks')">📋 Tasks</button>
                     <button class="tab-btn" onclick="switchTab('timers')">⏰ Timer Blocks</button>
                     <button class="tab-btn" onclick="switchTab('rewards')">🎁 Reward Shop</button>
+                    <button class="tab-btn" onclick="switchTab('funfacts')">🔭 Fun Facts</button>
                     <button class="tab-btn" onclick="switchTab('stats')">📊 Stats</button>
                 </div>
 
@@ -1169,6 +1330,38 @@
                     <div class="purchase-history" id="admin-purchase-history"></div>
                 </div>
 
+                <!-- Fun Facts Tab -->
+                <div id="funfacts-tab" class="tab-content">
+                    <div class="reward-form">
+                        <div class="form-group">
+                            <label>Emoji</label>
+                            <input type="text" id="funfact-emoji" placeholder="🦉">
+                        </div>
+                        <div class="form-group">
+                            <label>Topic</label>
+                            <input type="text" id="funfact-topic" placeholder="Why do owls fly silently?">
+                        </div>
+                        <div class="form-group">
+                            <label>Simple Fact (for Misha)</label>
+                            <textarea id="funfact-simple" rows="2" placeholder="Owls have special soft feathers that make them super quiet when they fly!"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Detailed Fact (for Kamia)</label>
+                            <textarea id="funfact-detailed" rows="3" placeholder="Did you know? Owls have specialized feathers with serrated edges that break up turbulent air, allowing them to fly almost completely silently. This gives them a huge advantage when hunting at night!"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Reward Crabs 🦀</label>
+                                <input type="number" id="funfact-crabs" value="5" min="1">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="addFunFact()">➕ Add Fun Fact</button>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Fun Facts Library <span id="funfact-count"></span></h3>
+                    <div class="reward-list" id="admin-funfact-list"></div>
+                </div>
+
                 <!-- Stats Tab -->
                 <div id="stats-tab" class="tab-content">
                     <div id="admin-stats"></div>
@@ -1185,6 +1378,40 @@
         let currentAdminKid = 'misha';
         let currentView = 'landing';
         let timerIntervals = {};
+
+        // Fun Facts Database
+        const DEFAULT_FUN_FACTS = [
+            { id: 1, emoji: '🦉', topic: 'Silent Owl Flight', simple: 'Owls have special soft feathers that make them super quiet when they fly!', detailed: 'Did you know? Owls have specialized feathers with serrated edges that break up turbulent air, allowing them to fly almost completely silently. This gives them a huge advantage when hunting at night!', crabs: 5 },
+            { id: 2, emoji: '🦀', topic: 'Immortal Crabs', simple: 'Lobsters can keep growing and living for a really really long time!', detailed: 'Did you know? Lobsters and some crabs produce an enzyme called telomerase that repairs their DNA, which theoretically means they could live forever if not eaten by predators or caught by humans!', crabs: 5 },
+            { id: 3, emoji: '🌋', topic: 'Inside a Volcano', simple: 'Volcanoes have super hot melted rock called lava inside them!', detailed: 'Did you know? Inside a volcano is a chamber filled with molten rock called magma, which can reach temperatures of 700-1,300°C (1,300-2,400°F)! When it erupts, we call it lava.', crabs: 5 },
+            { id: 4, emoji: '🐙', topic: 'Octopus Hearts', simple: 'An octopus has THREE hearts!', detailed: 'Did you know? Octopuses have three hearts - two pump blood to the gills, and one pumps blood to the rest of the body. Even cooler: their blood is blue because it uses copper instead of iron!', crabs: 5 },
+            { id: 5, emoji: '🌙', topic: 'The Moon is Escaping', simple: 'The moon is slowly moving away from Earth!', detailed: 'Did you know? The Moon is drifting away from Earth at about 3.8 centimeters (1.5 inches) per year. Millions of years from now, it will be much farther away than it is today!', crabs: 5 },
+            { id: 6, emoji: '🦕', topic: 'T-Rex Arms', simple: 'T-Rex had tiny arms but they were super strong!', detailed: 'Did you know? Despite being only about 3 feet long, a T-Rex\'s arms could lift approximately 400 pounds (180 kg) each. Scientists think they used them to grab prey or help themselves stand up!', crabs: 5 },
+            { id: 7, emoji: '🐝', topic: 'Bee Dance Language', simple: 'Bees do a special dance to tell other bees where flowers are!', detailed: 'Did you know? Honeybees perform a "waggle dance" to communicate the location of flowers to other bees. The angle and duration of the dance tells others exactly how far and in which direction to fly!', crabs: 5 },
+            { id: 8, emoji: '🌈', topic: 'Rainbow Colors', simple: 'Rainbows are made when sunlight goes through water drops!', detailed: 'Did you know? Rainbows form when sunlight enters water droplets, gets bent (refracted), reflects off the back of the droplet, and bends again as it exits. Each color bends at a slightly different angle, creating the rainbow spectrum!', crabs: 5 },
+            { id: 9, emoji: '🦎', topic: 'Gecko Feet', simple: 'Geckos can walk on walls and ceilings!', detailed: 'Did you know? Geckos have millions of tiny hair-like structures called setae on their feet. These create a special force called van der Waals force that lets them stick to almost any surface, even glass!', crabs: 5 },
+            { id: 10, emoji: '⚡', topic: 'Lightning Power', simple: 'Lightning is super hot - even hotter than the sun!', detailed: 'Did you know? A bolt of lightning can heat the air around it to temperatures five times hotter than the surface of the sun - about 30,000°C (54,000°F)! That\'s why it glows so bright.', crabs: 5 },
+            { id: 11, emoji: '🐬', topic: 'Dolphin Names', simple: 'Dolphins have names for each other!', detailed: 'Did you know? Dolphins develop unique whistles that function like names. They use these "signature whistles" to call out to specific individuals, and even respond when they hear their own name!', crabs: 5 },
+            { id: 12, emoji: '🌟', topic: 'Stars are Old Light', simple: 'When you see stars, you\'re looking at light from a long time ago!', detailed: 'Did you know? Stars are so far away that their light takes years to reach us. When you look at a star, you\'re actually seeing what it looked like years ago - it\'s like looking back in time!', crabs: 5 },
+            { id: 13, emoji: '🦘', topic: 'Kangaroo Hopping', simple: 'Kangaroos can\'t walk backwards!', detailed: 'Did you know? Kangaroos are unable to walk backwards due to their large tail and leg structure. This is why the kangaroo and emu (which also can\'t walk backwards) are on Australia\'s coat of arms - symbolizing forward progress!', crabs: 5 },
+            { id: 14, emoji: '🍄', topic: 'Giant Mushrooms', simple: 'The biggest living thing on Earth is a mushroom!', detailed: 'Did you know? The largest living organism on Earth is a honey fungus in Oregon that covers 2,385 acres (about 1,665 football fields) and is estimated to be over 2,400 years old!', crabs: 5 },
+            { id: 15, emoji: '🦈', topic: 'Shark Age', simple: 'Sharks are older than trees!', detailed: 'Did you know? Sharks have been around for over 400 million years, while trees only appeared about 350 million years ago. This means sharks existed before there were trees on Earth!', crabs: 5 },
+            { id: 16, emoji: '🌊', topic: 'Ocean Depth', simple: 'The ocean is really really deep - deeper than Mount Everest is tall!', detailed: 'Did you know? The deepest part of the ocean (the Mariana Trench) is about 11,000 meters (36,000 feet) deep. If you put Mount Everest in there, the peak would still be over a mile underwater!', crabs: 5 },
+            { id: 17, emoji: '🦇', topic: 'Bat Super Senses', simple: 'Bats use sound to see in the dark!', detailed: 'Did you know? Bats use echolocation - they make high-pitched sounds and listen to the echoes that bounce back. This lets them "see" using sound, creating a detailed picture of their surroundings even in complete darkness!', crabs: 5 },
+            { id: 18, emoji: '🌲', topic: 'Tree Talking', simple: 'Trees can talk to each other underground!', detailed: 'Did you know? Trees communicate through an underground network of fungal threads called the "wood wide web." They can share nutrients, send warning signals about insects, and even help sick trees by sending them resources!', crabs: 5 },
+            { id: 19, emoji: '🐧', topic: 'Penguin Proposals', simple: 'Penguins give rocks as presents when they fall in love!', detailed: 'Did you know? Male penguins search for the smoothest, most perfect pebble to present to a female penguin as a proposal. If she accepts, she places it in her nest and they become partners!', crabs: 5 },
+            { id: 20, emoji: '🔥', topic: 'Fire Rainbows', simple: 'There are rainbows made of fire!', detailed: 'Did you know? "Fire rainbows" (circumhorizontal arcs) occur when sunlight passes through ice crystals in very high cirrus clouds at a specific angle. They look like flames in the sky but are actually ice and light!', crabs: 5 },
+            { id: 21, emoji: '🦋', topic: 'Butterfly Memory', simple: 'Butterflies remember things from when they were caterpillars!', detailed: 'Did you know? Even though a caterpillar completely transforms into a butterfly (liquifying in the process), studies show butterflies can remember things they learned as caterpillars. Their memories survive metamorphosis!', crabs: 5 },
+            { id: 22, emoji: '🌍', topic: 'Earth\'s Spin', simple: 'The Earth is spinning really fast!', detailed: 'Did you know? Earth spins at about 1,670 kilometers per hour (1,040 mph) at the equator. You don\'t feel it because everything around you is moving at the same speed, including the atmosphere!', crabs: 5 },
+            { id: 23, emoji: '🐘', topic: 'Elephant Memory', simple: 'Elephants never forget!', detailed: 'Did you know? Elephants have incredible memories and can remember other elephants for decades. They can recall water hole locations, migration routes, and even distinguish between human voices and languages!', crabs: 5 },
+            { id: 24, emoji: '❄️', topic: 'Unique Snowflakes', simple: 'Every snowflake is different!', detailed: 'Did you know? No two snowflakes are exactly alike because each ice crystal takes a unique path through the atmosphere, encountering different temperatures and humidity levels, creating one-of-a-kind patterns!', crabs: 5 },
+            { id: 25, emoji: '🦒', topic: 'Giraffe Sounds', simple: 'Giraffes hum to each other at night!', detailed: 'Did you know? Scientists recently discovered that giraffes hum to each other at night at frequencies around 92 Hz. For a long time, people thought giraffes were silent animals!', crabs: 5 },
+            { id: 26, emoji: '🌺', topic: 'Flower Math', simple: 'Flowers use secret math patterns!', detailed: 'Did you know? Many flowers follow the Fibonacci sequence in their petal counts (3, 5, 8, 13, 21...). This mathematical pattern appears throughout nature and helps flowers arrange their petals efficiently!', crabs: 5 },
+            { id: 27, emoji: '🦜', topic: 'Parrot Colors', simple: 'Parrots don\'t have green pigment!', detailed: 'Did you know? Green parrots don\'t actually have green pigment in their feathers. The green color comes from yellow pigments combined with the blue structural color of their feathers - it\'s an optical illusion!', crabs: 5 },
+            { id: 28, emoji: '🌀', topic: 'Water Spirals', simple: 'Water spins different directions in different parts of the world!', detailed: 'Did you know? Due to the Coriolis effect caused by Earth\'s rotation, hurricanes spin counterclockwise in the Northern Hemisphere and clockwise in the Southern Hemisphere. The same applies to large-scale ocean currents!', crabs: 5 },
+            { id: 29, emoji: '🐻', topic: 'Bear Hibernation', simple: 'Bears sleep through winter without going to the bathroom!', detailed: 'Did you know? During hibernation, bears don\'t eat, drink, urinate, or defecate for months. Their bodies recycle waste and can even build new muscle mass while sleeping - something humans can\'t do!', crabs: 5 },
+            { id: 30, emoji: '🎨', topic: 'Mantis Shrimp Vision', simple: 'Mantis shrimp can see way more colors than we can!', detailed: 'Did you know? Mantis shrimp have 16 color receptors (humans have 3). They can see ultraviolet, infrared, and polarized light. They experience a rainbow of colors we can\'t even imagine!', crabs: 5 }
+        ];
 
         // Level titles
         const LEVEL_TITLES = {
@@ -1284,11 +1511,14 @@
                     xp: 0,
                     level: 1,
                     coins: 0,
+                    crabs: 0,
                     achievements: [],
                     purchaseHistory: [],
                     lastCompletionDate: null,
                     tasksCompletedToday: 0,
-                    speedDemonUnlocked: false
+                    speedDemonUnlocked: false,
+                    discoveryCompleted: false,
+                    discoveryHistory: []
                 },
                 kamia: {
                     tasks: [
@@ -1307,12 +1537,16 @@
                     xp: 0,
                     level: 1,
                     coins: 0,
+                    crabs: 0,
                     achievements: [],
                     purchaseHistory: [],
                     lastCompletionDate: null,
                     tasksCompletedToday: 0,
-                    speedDemonUnlocked: false
+                    speedDemonUnlocked: false,
+                    discoveryCompleted: false,
+                    discoveryHistory: []
                 },
+                funFacts: DEFAULT_FUN_FACTS,
                 lastResetDate: new Date().toDateString()
             };
 
@@ -1344,7 +1578,22 @@
         }
 
         function getData() {
-            return initData();
+            const data = initData();
+            // Ensure kid data fields are never undefined
+            ['misha', 'kamia'].forEach(kid => {
+                if (data[kid]) {
+                    data[kid].xp = data[kid].xp || 0;
+                    data[kid].coins = data[kid].coins || 0;
+                    data[kid].crabs = data[kid].crabs || 0;
+                    data[kid].stars = data[kid].stars || 0;
+                    data[kid].streak = data[kid].streak || 0;
+                    data[kid].level = data[kid].level || 1;
+                    data[kid].achievements = data[kid].achievements || [];
+                    data[kid].purchaseHistory = data[kid].purchaseHistory || [];
+                    data[kid].tasksCompletedToday = data[kid].tasksCompletedToday || 0;
+                }
+            });
+            return data;
         }
 
         // Theme Toggle
@@ -1400,11 +1649,110 @@
                     data[kid].stars = 0;
                     data[kid].tasksCompletedToday = 0;
                     data[kid].speedDemonUnlocked = false;
+                    data[kid].discoveryCompleted = false;
                 });
 
                 data.lastResetDate = today;
                 saveData(data);
             }
+        }
+
+        // Fun Facts / Discovery System
+        function getDailyFact() {
+            const data = getData();
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const factIndex = dayOfYear % data.funFacts.length;
+            return data.funFacts[factIndex];
+        }
+
+        function renderDiscoveryCard(kid) {
+            const data = getData();
+            const container = document.getElementById(`${kid}-discovery-card`);
+            const fact = getDailyFact();
+            const completed = data[kid].discoveryCompleted;
+            
+            if (!completed) {
+                // Locked treasure chest
+                container.innerHTML = `
+                    <div class="discovery-card locked" onclick="revealDiscovery('${kid}')">
+                        <div class="discovery-locked-content">
+                            <div class="discovery-treasure">📦✨</div>
+                            <div class="discovery-locked-text">Tap to discover today's fact!</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Revealed fact
+                const factText = kid === 'misha' ? fact.simple : fact.detailed;
+                container.innerHTML = `
+                    <div class="discovery-card discovery-completed">
+                        <div class="discovery-unlocked-content">
+                            <div class="discovery-emoji">${fact.emoji}</div>
+                            <div class="discovery-topic">${fact.topic}</div>
+                            <div class="discovery-fact">${factText}</div>
+                            <div class="discovery-reward">Already earned +${fact.crabs} 🦀</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function revealDiscovery(kid) {
+            const data = getData();
+            
+            if (data[kid].discoveryCompleted) {
+                return; // Already completed today
+            }
+            
+            const fact = getDailyFact();
+            data[kid].discoveryCompleted = true;
+            data[kid].crabs += fact.crabs;
+            data[kid].discoveryHistory.push({
+                factId: fact.id,
+                date: new Date().toISOString()
+            });
+            
+            saveData(data);
+            
+            // Play reveal animation and sound
+            playCompletionSound();
+            
+            // Show treasure reveal animation
+            const container = document.getElementById(`${kid}-discovery-card`);
+            const factText = kid === 'misha' ? fact.simple : fact.detailed;
+            
+            // Confetti burst
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = ['#667eea', '#764ba2', '#FFD700', '#FFA500'][Math.floor(Math.random() * 4)];
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 20);
+            }
+            
+            // Update card with revealed content
+            container.innerHTML = `
+                <div class="discovery-card">
+                    <div class="discovery-unlocked-content">
+                        <div class="discovery-emoji">${fact.emoji}</div>
+                        <div class="discovery-topic">${fact.topic}</div>
+                        <div class="discovery-fact">${factText}</div>
+                        <div class="discovery-reward">+${fact.crabs} 🦀 Earned!</div>
+                    </div>
+                </div>
+            `;
+            
+            updateKidStats(kid);
+            updateLandingStats();
+        }
+
+        function getTotalFunFacts() {
+            const data = getData();
+            return data.funFacts ? data.funFacts.length : 0;
         }
 
         // XP and Level System
@@ -1515,6 +1863,7 @@
             renderKidTasks(kid);
             updateKidStats(kid);
             renderTimerDisplay(kid);
+            renderDiscoveryCard(kid);
             startTimerUpdates(kid);
         }
 
@@ -1529,16 +1878,27 @@
             overlay.innerHTML = `
                 <div class="pin-dialog">
                     <h2>Enter PIN</h2>
-                    <input type="password" class="pin-input" id="pin-input" maxlength="4" readonly>
+                    <input type="password" class="pin-input" id="pin-input" maxlength="4" placeholder="••••">
                     <div class="pin-buttons">
                         ${[1,2,3,4,5,6,7,8,9,'←',0,'✓'].map(n => 
                             `<button class="pin-btn" onclick="pinPress('${n}')">${n}</button>`
                         ).join('')}
                     </div>
-                    <p style="margin-top: 20px; color: var(--text-secondary);">Default PIN: 1234</p>
+                    <p style="margin-top: 20px; color: var(--text-secondary);">Default PIN: 1234<br>Type on keyboard or click buttons</p>
                 </div>
             `;
             document.body.appendChild(overlay);
+
+            // Focus the input for immediate typing
+            const input = document.getElementById('pin-input');
+            setTimeout(() => input.focus(), 100);
+
+            // Handle keyboard Enter key
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkPin();
+                }
+            });
 
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
@@ -1549,24 +1909,33 @@
 
         function pinPress(key) {
             const input = document.getElementById('pin-input');
-            const data = getData();
 
             if (key === '←') {
                 input.value = input.value.slice(0, -1);
             } else if (key === '✓') {
-                if (input.value === data.pin) {
-                    document.querySelector('.pin-screen').remove();
-                    document.getElementById('landing').style.display = 'none';
-                    document.getElementById('parent-view').classList.add('active');
-                    currentView = 'parent';
-                    renderAdminView();
-                } else {
-                    input.value = '';
-                    input.style.borderColor = '#EF5350';
-                    setTimeout(() => input.style.borderColor = '#FF6B9D', 500);
-                }
+                checkPin();
             } else if (input.value.length < 4) {
                 input.value += key;
+            }
+        }
+
+        function checkPin() {
+            const input = document.getElementById('pin-input');
+            const data = getData();
+
+            if (input.value === data.pin) {
+                document.querySelector('.pin-screen').remove();
+                document.getElementById('landing').style.display = 'none';
+                document.getElementById('parent-view').classList.add('active');
+                currentView = 'parent';
+                renderAdminView();
+            } else {
+                input.value = '';
+                input.style.borderColor = '#EF5350';
+                setTimeout(() => {
+                    input.style.borderColor = '';
+                    input.focus();
+                }, 500);
             }
         }
 
@@ -1717,7 +2086,7 @@
                     </div>`;
                 }
 
-                const xpDisplay = `<div class="task-xp">+${task.xp} XP • +${task.coins} 💰</div>`;
+                const xpDisplay = `<div class="task-xp">+${task.xp} XP • +${task.coins} 🪙</div>`;
 
                 card.innerHTML = `
                     <span class="task-emoji">${task.emoji}</span>
@@ -1785,6 +2154,7 @@
             // Update stats
             document.getElementById(`${kid}-stars`).textContent = kidData.stars;
             document.getElementById(`${kid}-coins`).textContent = kidData.coins;
+            document.getElementById(`${kid}-crabs`).textContent = kidData.crabs;
             document.getElementById(`${kid}-streak`).textContent = kidData.streak;
             
             // Update XP bar
@@ -1811,8 +2181,8 @@
                 document.getElementById(`${kid}-avatar-landing`).textContent = avatar;
                 document.getElementById(`${kid}-level-preview`).textContent = `Lv ${kidData.level}`;
                 document.getElementById(`${kid}-stars-preview`).textContent = `⭐ ${kidData.stars}`;
-                document.getElementById(`${kid}-coins-preview`).textContent = `💰 ${kidData.coins}`;
-                document.getElementById(`${kid}-streak-preview`).textContent = `🔥 ${kidData.streak}`;
+                document.getElementById(`${kid}-coins-preview`).textContent = `🪙 ${kidData.coins}`;
+                document.getElementById(`${kid}-crabs-preview`).textContent = `🦀 ${kidData.crabs}`;
             });
         }
 
@@ -1839,7 +2209,7 @@
             popup.innerHTML = `
                 <div class="popup-emoji">🎉</div>
                 <div class="popup-text">Great Job!</div>
-                <div class="popup-subtext">+${xp} XP • +${coins} 💰</div>
+                <div class="popup-subtext">+${xp} XP • +${coins} 🪙</div>
             `;
             document.body.appendChild(popup);
             setTimeout(() => popup.remove(), 2000);
@@ -1864,7 +2234,7 @@
                     <div class="shop-item">
                         <div class="shop-item-info">
                             <div class="shop-item-name">${item.name}</div>
-                            <div class="shop-item-cost">💰 ${item.cost}</div>
+                            <div class="shop-item-cost">🪙 ${item.cost}</div>
                         </div>
                         <button class="shop-item-btn" ${!canBuy ? 'disabled' : ''} onclick="buyReward('${kid}', ${item.id})">
                             Buy
@@ -1878,7 +2248,7 @@
                     <button class="shop-close" onclick="this.closest('.shop-modal').remove()">✕</button>
                     <div class="shop-header">
                         <h2>🏪 Reward Shop</h2>
-                        <div class="shop-balance">💰 ${kidData.coins} coins</div>
+                        <div class="shop-balance">🪙 ${kidData.coins} coins</div>
                     </div>
                     <div class="shop-items">
                         ${shopItems}
@@ -1982,6 +2352,8 @@
                 renderAdminTimerList();
             } else if (tabName === 'rewards') {
                 renderAdminRewardList();
+            } else if (tabName === 'funfacts') {
+                renderAdminFunFactList();
             }
         }
 
@@ -2061,7 +2433,7 @@
                     <span class="task-item-emoji">${task.emoji}</span>
                     <div class="task-item-info">
                         <strong>${task.title}</strong>
-                        <div style="font-size: 0.9em; color: var(--success);">+${task.xp} XP • +${task.coins} 💰</div>
+                        <div style="font-size: 0.9em; color: var(--success);">+${task.xp} XP • +${task.coins} 🪙</div>
                         ${task.subtasks ? `<div style="font-size: 0.9em; color: var(--text-secondary);">${task.subtasks.length} subtasks</div>` : ''}
                         ${task.recurring ? '<div style="font-size: 0.8em; color: var(--success);">🔄 Daily</div>' : ''}
                     </div>
@@ -2195,7 +2567,7 @@
                     <div class="reward-item">
                         <div class="reward-item-info">
                             <strong>${reward.name}</strong>
-                            <div style="font-size: 0.9em; color: var(--warning);">💰 ${reward.cost}</div>
+                            <div style="font-size: 0.9em; color: var(--warning);">🪙 ${reward.cost}</div>
                         </div>
                         <div class="reward-item-actions">
                             <button class="btn-small btn-delete" onclick="deleteReward(${reward.id})">🗑️</button>
@@ -2222,7 +2594,7 @@
                                 <strong>${purchase.kid}</strong> bought <strong>${purchase.rewardName}</strong>
                                 <div style="font-size: 0.8em; color: var(--text-secondary);">${dateStr}</div>
                             </div>
-                            <span style="color: var(--warning);">-${purchase.cost} 💰</span>
+                            <span style="color: var(--warning);">-${purchase.cost} 🪙</span>
                         </div>
                     `;
                 }).join('');
@@ -2243,7 +2615,15 @@
                 </div>
                 <div class="history-item">
                     <strong>Coins:</strong>
-                    <span>💰 ${data.misha.coins}</span>
+                    <span>🪙 ${data.misha.coins}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Crabs:</strong>
+                    <span>🦀 ${data.misha.crabs}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Discoveries:</strong>
+                    <span>📚 ${data.misha.discoveryHistory.length} facts learned</span>
                 </div>
                 <div class="history-item">
                     <strong>Streak:</strong>
@@ -2265,7 +2645,15 @@
                 </div>
                 <div class="history-item">
                     <strong>Coins:</strong>
-                    <span>💰 ${data.kamia.coins}</span>
+                    <span>🪙 ${data.kamia.coins}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Crabs:</strong>
+                    <span>🦀 ${data.kamia.crabs}</span>
+                </div>
+                <div class="history-item">
+                    <strong>Discoveries:</strong>
+                    <span>📚 ${data.kamia.discoveryHistory.length} facts learned</span>
                 </div>
                 <div class="history-item">
                     <strong>Streak:</strong>
@@ -2291,6 +2679,84 @@
                 </div>
             `;
             document.getElementById('admin-stats').innerHTML = statsHTML;
+        }
+
+        // Fun Facts Admin Functions
+        function addFunFact() {
+            const emoji = document.getElementById('funfact-emoji').value.trim();
+            const topic = document.getElementById('funfact-topic').value.trim();
+            const simple = document.getElementById('funfact-simple').value.trim();
+            const detailed = document.getElementById('funfact-detailed').value.trim();
+            const crabs = parseInt(document.getElementById('funfact-crabs').value) || 5;
+
+            if (!emoji || !topic || !simple || !detailed) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const data = getData();
+            const maxId = Math.max(0, ...data.funFacts.map(f => f.id));
+            
+            data.funFacts.push({
+                id: maxId + 1,
+                emoji,
+                topic,
+                simple,
+                detailed,
+                crabs
+            });
+            
+            saveData(data);
+
+            // Clear form
+            document.getElementById('funfact-emoji').value = '';
+            document.getElementById('funfact-topic').value = '';
+            document.getElementById('funfact-simple').value = '';
+            document.getElementById('funfact-detailed').value = '';
+            document.getElementById('funfact-crabs').value = '5';
+
+            renderAdminFunFactList();
+        }
+
+        function deleteFunFact(factId) {
+            if (!confirm('Delete this fun fact?')) return;
+
+            const data = getData();
+            data.funFacts = data.funFacts.filter(f => f.id !== factId);
+            saveData(data);
+            renderAdminFunFactList();
+        }
+
+        function renderAdminFunFactList() {
+            const data = getData();
+            const container = document.getElementById('admin-funfact-list');
+            const countEl = document.getElementById('funfact-count');
+            
+            if (countEl) {
+                countEl.textContent = `(${data.funFacts.length} facts)`;
+            }
+
+            if (data.funFacts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No fun facts yet</p>';
+                return;
+            }
+
+            container.innerHTML = data.funFacts.map((fact, index) => `
+                <div class="reward-item">
+                    <span class="reward-item-emoji">${fact.emoji}</span>
+                    <div class="reward-item-info">
+                        <strong>${fact.topic}</strong>
+                        <div style="font-size: 0.9em; color: var(--text-secondary);">
+                            Simple: ${fact.simple.substring(0, 50)}${fact.simple.length > 50 ? '...' : ''}
+                        </div>
+                        <div style="font-size: 0.9em; color: var(--success);">+${fact.crabs} 🦀</div>
+                        <div style="font-size: 0.8em; color: var(--text-secondary);">Day ${(index % data.funFacts.length) + 1} in rotation</div>
+                    </div>
+                    <div class="reward-item-actions">
+                        <button class="btn-small btn-delete" onclick="deleteFunFact(${fact.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function renderAdminView() {
