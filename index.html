@@ -2106,6 +2106,7 @@
             const task = data[kid].tasks.find(t => t.id === taskId);
             
             if (!task.completed) {
+                // COMPLETE THE TASK
                 const taskCreatedTime = Date.now(); // In real app, track when task appears
                 
                 task.completed = true;
@@ -2135,6 +2136,25 @@
                 
                 // Check achievements after a delay to allow animations to play
                 setTimeout(() => checkAchievements(kid), 2000);
+            } else {
+                // UNCOMPLETE THE TASK (allow mistakes to be fixed)
+                task.completed = false;
+                data[kid].stars = Math.max(0, data[kid].stars - 1);
+                data[kid].coins = Math.max(0, data[kid].coins - (task.coins || 5));
+                data[kid].xp = Math.max(0, data[kid].xp - (task.xp || 10));
+                data[kid].tasksCompletedToday = Math.max(0, data[kid].tasksCompletedToday - 1);
+                
+                // Check if level should decrease (rare but possible if unchecking many tasks)
+                while (data[kid].level > 1 && data[kid].xp < 0) {
+                    data[kid].level--;
+                    data[kid].xp += getXPForLevel(data[kid].level);
+                }
+                
+                saveData(data);
+                renderKidTasks(kid);
+                updateKidStats(kid);
+                updateLandingStats();
+                renderTimerDisplay(kid);
             }
         }
 
